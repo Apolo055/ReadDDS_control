@@ -611,29 +611,7 @@ namespace Aplicacion1
                     }
 
                     string rutaArchivo2 = textBox_archivotxt.Text.Trim();
-                    string plantilla = $@"
-^0*BEGINLJSCRIPT [(V01.06.00.31)]
-^0*JLPAR [52 0 0 2 400 180 0 11000 00:00 1 7000 0 0 1000 0 0]
-^0*VISION [ 0 1 0 55000 3 5 3 5 0 ]
-^0*MOBAPARAMETERUSAGE [ 0 ]
-^0*BEGINJOB [ 0 (|_BEGINJOB_|) ]
-^0*JOBPAR [ 30000 65535 0 400 7 200 0 0 0 0 -1 ({{F671A72C-E135-DD52-6599-54EDDA3BE6D6}}) 1 1 55000 1 1 0 1 0 0 0 1 0 0 ]
-^0*OBJ [1 0 0 0 (ISO1_7x5)  (P00501430) 1 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
-^0*ENDJOB []
-^0*ENDLJSCRIPT []     
-";
                    
-
-                    Dictionary<string, string> parametros = new Dictionary<string, string>();
-                    parametros.Add("|_BEGINJOB_|", "XXXXX");
-                    parametros.Add("|_BEGINJOB_|", "XXXXX");
-                    parametros.Add("|_BEGINJOB_|", "XXXXX");
-                   
-                    foreach (KeyValuePair<string, string> item in parametros)
-                    {
-                       plantilla = plantilla.Replace(item.Key,item.Value);
-
-                    }
 
                     if (File.Exists(rutaArchivo2))
                     {
