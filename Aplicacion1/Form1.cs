@@ -628,8 +628,7 @@ namespace Aplicacion1
                     parametros.Add("|_BEGINJOB_|", "XXXXX");
                     parametros.Add("|_BEGINJOB_|", "XXXXX");
                     parametros.Add("|_BEGINJOB_|", "XXXXX");
-                    parametros.Add("|_BEGINJOB_|", "XXXXX");
-                    parametros.Add("|_BEGINJOB_|", "XXXXX");
+                   
                     foreach (KeyValuePair<string, string> item in parametros)
                     {
                        plantilla = plantilla.Replace(item.Key,item.Value);
