@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.label_IP = new System.Windows.Forms.Label();
             this.Numero_puerto = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -36,16 +35,13 @@
             this.textBox_Puerto = new System.Windows.Forms.TextBox();
             this.textBox_IP = new System.Windows.Forms.TextBox();
             this.groupBox_Configuracion_comunicacion = new System.Windows.Forms.GroupBox();
+            this.textBox_archivotxt = new System.Windows.Forms.TextBox();
+            this.label_ruta_archivo = new System.Windows.Forms.Label();
             this.textBox_ruta_de_carpeta = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label_velocidad = new System.Windows.Forms.Label();
             this.label_serial = new System.Windows.Forms.Label();
             this.textBox_Comando = new System.Windows.Forms.TextBox();
-            this.Servidor = new System.Windows.Forms.PictureBox();
-            this.Cliente = new System.Windows.Forms.PictureBox();
-            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            this.label_conexion = new System.Windows.Forms.Label();
-            this.pictureBox_cable = new System.Windows.Forms.PictureBox();
             this.groupBox_Botonesdecontrol = new System.Windows.Forms.GroupBox();
             this.button_leer = new System.Windows.Forms.Button();
             this.button_descarga = new System.Windows.Forms.Button();
@@ -59,12 +55,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button_Limpiar = new System.Windows.Forms.Button();
             this.textBox_Respuesta = new System.Windows.Forms.TextBox();
-            this.label_ruta_archivo = new System.Windows.Forms.Label();
-            this.textBox_archivotxt = new System.Windows.Forms.TextBox();
             this.groupBox_Configuracion_comunicacion.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Servidor)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Cliente)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_cable)).BeginInit();
             this.groupBox_Botonesdecontrol.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -153,6 +144,23 @@
             this.groupBox_Configuracion_comunicacion.TabStop = false;
             this.groupBox_Configuracion_comunicacion.Text = "Configuracion de la cominicación";
             // 
+            // textBox_archivotxt
+            // 
+            this.textBox_archivotxt.Location = new System.Drawing.Point(237, 265);
+            this.textBox_archivotxt.Name = "textBox_archivotxt";
+            this.textBox_archivotxt.Size = new System.Drawing.Size(250, 32);
+            this.textBox_archivotxt.TabIndex = 14;
+            // 
+            // label_ruta_archivo
+            // 
+            this.label_ruta_archivo.AutoSize = true;
+            this.label_ruta_archivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_ruta_archivo.Location = new System.Drawing.Point(16, 263);
+            this.label_ruta_archivo.Name = "label_ruta_archivo";
+            this.label_ruta_archivo.Size = new System.Drawing.Size(175, 26);
+            this.label_ruta_archivo.TabIndex = 13;
+            this.label_ruta_archivo.Text = "Ruta archivo.txt :";
+            // 
             // textBox_ruta_de_carpeta
             // 
             this.textBox_ruta_de_carpeta.Location = new System.Drawing.Point(237, 209);
@@ -201,45 +209,6 @@
             this.textBox_Comando.Size = new System.Drawing.Size(499, 248);
             this.textBox_Comando.TabIndex = 16;
             this.textBox_Comando.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_Comando_KeyDown);
-            // 
-            // Servidor
-            // 
-            this.Servidor.Location = new System.Drawing.Point(108, 365);
-            this.Servidor.Name = "Servidor";
-            this.Servidor.Size = new System.Drawing.Size(49, 27);
-            this.Servidor.TabIndex = 11;
-            this.Servidor.TabStop = false;
-            // 
-            // Cliente
-            // 
-            this.Cliente.Location = new System.Drawing.Point(373, 365);
-            this.Cliente.Name = "Cliente";
-            this.Cliente.Size = new System.Drawing.Size(82, 23);
-            this.Cliente.TabIndex = 12;
-            this.Cliente.TabStop = false;
-            // 
-            // serialPort1
-            // 
-            this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
-            // 
-            // label_conexion
-            // 
-            this.label_conexion.AutoSize = true;
-            this.label_conexion.Font = new System.Drawing.Font("Nirmala UI", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_conexion.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label_conexion.Location = new System.Drawing.Point(434, 375);
-            this.label_conexion.Name = "label_conexion";
-            this.label_conexion.Size = new System.Drawing.Size(291, 17);
-            this.label_conexion.TabIndex = 14;
-            this.label_conexion.Text = "Verifica la conexion fisica y presiona Conectar";
-            // 
-            // pictureBox_cable
-            // 
-            this.pictureBox_cable.Location = new System.Drawing.Point(218, 375);
-            this.pictureBox_cable.Name = "pictureBox_cable";
-            this.pictureBox_cable.Size = new System.Drawing.Size(149, 23);
-            this.pictureBox_cable.TabIndex = 15;
-            this.pictureBox_cable.TabStop = false;
             // 
             // groupBox_Botonesdecontrol
             // 
@@ -392,33 +361,12 @@
             this.textBox_Respuesta.Size = new System.Drawing.Size(1432, 309);
             this.textBox_Respuesta.TabIndex = 0;
             // 
-            // label_ruta_archivo
-            // 
-            this.label_ruta_archivo.AutoSize = true;
-            this.label_ruta_archivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_ruta_archivo.Location = new System.Drawing.Point(16, 263);
-            this.label_ruta_archivo.Name = "label_ruta_archivo";
-            this.label_ruta_archivo.Size = new System.Drawing.Size(186, 29);
-            this.label_ruta_archivo.TabIndex = 13;
-            this.label_ruta_archivo.Text = "Ruta archivo.txt :";
-            // 
-            // textBox_archivotxt
-            // 
-            this.textBox_archivotxt.Location = new System.Drawing.Point(237, 265);
-            this.textBox_archivotxt.Name = "textBox_archivotxt";
-            this.textBox_archivotxt.Size = new System.Drawing.Size(250, 32);
-            this.textBox_archivotxt.TabIndex = 14;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1532, 781);
-            this.Controls.Add(this.Servidor);
-            this.Controls.Add(this.label_conexion);
-            this.Controls.Add(this.pictureBox_cable);
-            this.Controls.Add(this.Cliente);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox_Botonesdecontrol);
@@ -427,16 +375,12 @@
             this.Text = "Aplicacion de conexion ADP";
             this.groupBox_Configuracion_comunicacion.ResumeLayout(false);
             this.groupBox_Configuracion_comunicacion.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Servidor)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Cliente)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_cable)).EndInit();
             this.groupBox_Botonesdecontrol.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -449,13 +393,8 @@
         private System.Windows.Forms.TextBox textBox_Puerto;
         private System.Windows.Forms.TextBox textBox_IP;
         private System.Windows.Forms.GroupBox groupBox_Configuracion_comunicacion;
-        private System.Windows.Forms.PictureBox Servidor;
-        private System.Windows.Forms.PictureBox Cliente;
-        private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.Label label_serial;
         private System.Windows.Forms.Label label_velocidad;
-        private System.Windows.Forms.Label label_conexion;
-        private System.Windows.Forms.PictureBox pictureBox_cable;
         private System.Windows.Forms.TextBox textBox_Comando;
         private System.Windows.Forms.GroupBox groupBox_Botonesdecontrol;
         private System.Windows.Forms.Button button_Encender;

@@ -38,9 +38,6 @@ namespace Aplicacion1
             textBox_Puerto.Enabled = false;
             label_serial.Visible = false;
             label_velocidad.Visible = false;
-            label_conexion.Visible = false;
-            serialPort1.PortName = "COM4"; // Aquí puedes poner el número de puerto que desees
-            serialPort1.BaudRate = 9600; // Aquí puedes poner la velocidad de transmisión que desees
             textBox_ruta_de_carpeta.Text = @"C:\Users\manue\OneDrive\Escritorio\programas_impresora\article.dds";
             textBox_archivotxt.Text = @"C:\Users\manue\OneDrive\Escritorio\Archivo\Archivo.txt";
             button_leer.Visible = true;
@@ -76,15 +73,7 @@ namespace Aplicacion1
             MessageBox.Show($"El archivo {e.Name} ha sido {e.ChangeType}");
         }
 
-        private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e) //metodo para abrir el puerto serial
-        {
-            while (serialPort1.IsOpen && serialPort1.BytesToRead > 0)//verificamos si hay datos en el puerto serial
-            {
-                String linea1 = serialPort1.ReadLine();//leemos y guardamos los datos
-            }
-
-        }
-
+     
         private void radioButton_SSH_CheckedChanged(object sender, EventArgs e) //evento para seleccionar el tipo de comunicacion
         {
 
@@ -99,10 +88,6 @@ namespace Aplicacion1
             textBox_Puerto.Enabled = true;
             textBox_Comando.Enabled = true;
             textBox_Respuesta.Enabled = true;
-            label_conexion.Visible = false;
-            pictureBox_cable.Visible = false;
-            Servidor.Visible = false;
-            Cliente.Visible = false;
             textBox_IP.Text = "172.16.23.97";
             textBox_Puerto.Text = "3000";
             textBox_ruta_de_carpeta.Text = @"C:\Users\manue\OneDrive\Escritorio\programas_impresora\article.dds";
@@ -194,7 +179,6 @@ namespace Aplicacion1
                 Console.WriteLine("El error ocurrió en la línea: " + new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber());
             }
         }
-
 
         private void imprimir() // metodo para imprimir respuesta y mensaje 
         {
