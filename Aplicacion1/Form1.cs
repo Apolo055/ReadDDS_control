@@ -81,8 +81,6 @@ namespace Aplicacion1
             while (serialPort1.IsOpen && serialPort1.BytesToRead > 0)//verificamos si hay datos en el puerto serial
             {
                 String linea1 = serialPort1.ReadLine();//leemos y guardamos los datos
-
-
             }
 
         }
@@ -113,6 +111,90 @@ namespace Aplicacion1
             serial = false;
             SSH = true;
         }
+
+        private async void button_leer_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (File.Exists(textBox_ruta_de_carpeta.Text.Trim()))
+                {
+                    string contenidoArchivo1 = File.ReadAllText(textBox_ruta_de_carpeta.Text.Trim());
+
+                    Dictionary<string, string[]> valoresEncontrados1 = new Dictionary<string, string[]>();
+                    foreach (string linea in contenidoArchivo1.Split('\n'))
+                    {
+                        string[] partes = linea.Split('=');
+                        if (partes.Length > 1)
+                        {
+                            string clave = partes[0].Trim();
+                            string valor = partes[1].Trim();
+                            if (clave == "MarkingTextBegin" || clave == "MarkingTextEndless" || clave == "MarkingTextEnd")
+                            {
+                                if (valor.Contains(","))
+                                {
+                                    string[] valores = valor.Split(',');
+                                    valores[0] = valores[0].Trim('"');
+                                    valores[1] = valores[1].Trim('"');
+                                    valoresEncontrados1[clave] = valores;
+                                }
+                            }
+                            else if (clave == "Name")
+                            {
+                                valor = valor.Trim('"');
+                                valoresEncontrados1[clave] = new string[] { valor };
+                            }
+                        }
+                    }
+
+                    string plantilla = @"
+                    BEGINLJSCRIPT [(V01.06.00.31)]
+                    JLPAR [70 1 0 3 10 180 0 12500 00:00 1 7000 0 0 1000 0 0]
+                    VISION [ 0 1 0 55000 3 5 3 5 0 ]
+                    BEGINJOB [ 0 (|_BEGINJOB_|) ]
+                    JOBPAR [ |_JOBPAR1_| 2 40000 320 0 0 0 1 1 0 -1 ({09E0BA11-8ADB-1E0E-B02B-55C7F102F9EC}) 1 1 55000 1 2 0 1 0 0 0 1 0 0 ]
+                    OBJ [1 0 0 0 (ISO1_7x5)  (|_OBJ1_|) 2 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
+                    JOBPAR [ |_JOBPAR2_| 2 40000 320 0 0 0 1 1 0 -1 ({09E0BA11-8ADB-1E0E-B02B-55C7F102F9EC}) 1 1 55000 1 2 0 1 0 0 0 1 0 0 ]
+                    OBJ [1 0 0 0 (ISO1_7x5)  (|_OBJ2_|) 2 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
+                    JOBPAR [ |_JOBPAR3_| 2 40000 320 0 0 0 1 1 0 -1 ({09E0BA11-8ADB-1E0E-B02B-55C7F102F9EC}) 1 1 55000 1 2 0 1 0 0 0 1 0 0 ]
+                    OBJ [1 0 0 0 (ISO1_7x5)  (|_OBJ3_|) 2 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
+                    ENDJOB []
+                    ENDLJSCRIPT []     
+                    ";
+
+                    Dictionary<string, string> parametros = new Dictionary<string, string>();
+                    parametros.Add("|_BEGINJOB_|", valoresEncontrados1["Name"][0]);
+                    parametros.Add("|_JOBPAR1_|", valoresEncontrados1["MarkingTextBegin"][0]);
+                    parametros.Add("|_OBJ1_|", valoresEncontrados1["MarkingTextBegin"][1]);
+                    parametros.Add("|_JOBPAR2_|", valoresEncontrados1["MarkingTextEndless"][0]);
+                    parametros.Add("|_OBJ2_|", valoresEncontrados1["MarkingTextEndless"][1]);
+                    parametros.Add("|_JOBPAR3_|", valoresEncontrados1["MarkingTextEnd"][0]);
+                    parametros.Add("|_OBJ3_|", valoresEncontrados1["MarkingTextEnd"][1]);
+
+                    foreach (KeyValuePair<string, string> item in parametros)
+                    {
+                        plantilla = plantilla.Replace(item.Key, item.Value);
+                    }
+
+                    textBox_Comando.Text = plantilla;
+
+                    command = textBox_Comando.Text.Trim();
+                    await conectar();
+                    imprimir();
+
+                    textBox_Comando.Text = "El mensaje modificado ha sido enviado";
+                }
+                else
+                {
+                    textBox_Comando.Text = "El archivo1 no existe.";
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocurrió un error al leer el archivo: " + ex.Message);
+                Console.WriteLine("El error ocurrió en la línea: " + new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber());
+            }
+        }
+
 
         private void imprimir() // metodo para imprimir respuesta y mensaje 
         {
@@ -164,105 +246,7 @@ namespace Aplicacion1
 
             }
         }
-
       
-        private async void button_leer_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (File.Exists(textBox_ruta_de_carpeta.Text.Trim()))
-                {
-                    string contenidoArchivo1 = File.ReadAllText(textBox_ruta_de_carpeta.Text.Trim());
-
-                    string[] palabrasClave1 = { "Name", "MarkingTextBegin" };
-                    Dictionary<string, string> valoresEncontrados1 = new Dictionary<string, string>();
-                    foreach (string linea in contenidoArchivo1.Split('\n'))
-                    {
-                        foreach (string palabra in palabrasClave1)
-                        {
-                            if (linea.Contains(palabra))
-                            {
-                                string[] partes = linea.Split('=');
-                                if (partes.Length > 1)
-                                {
-                                    string valor = partes[1].Trim();
-                                    if (palabra == "Name")
-                                    {
-                                        valor = valor.Trim('"');
-                                    }
-                                    valoresEncontrados1[palabra] = valor;
-                                }
-                            }
-                        }
-                    }
-
-                    string rutaArchivo2 = textBox_archivotxt.Text.Trim();
-                   
-
-                    if (File.Exists(rutaArchivo2))
-                    {
-                        string[] lineasArchivo2 = File.ReadAllLines(rutaArchivo2);
-
-                        for (int i = 0; i < lineasArchivo2.Length; i++)
-                        {
-                            if (lineasArchivo2[i].Contains("JOBPAR") && valoresEncontrados1.ContainsKey("MarkingTextBegin"))
-                            {
-                                int indexBracket = lineasArchivo2[i].IndexOf('[');
-                                string[] partes = lineasArchivo2[i].Substring(indexBracket + 1).Split(' ');
-                                if (partes.Length > 1)
-                                {
-                                    // Convertir el valor a micrómetros
-                                    double valorEnMm = double.Parse(valoresEncontrados1["MarkingTextBegin"].Split(',')[0]);
-                                    double valorEnMicrometros = valorEnMm * 100;
-                                    partes[1] = valorEnMicrometros.ToString();
-                                    lineasArchivo2[i] = lineasArchivo2[i].Substring(0, indexBracket + 1) + string.Join(" ", partes);
-                                }
-                            }
-                            else if (lineasArchivo2[i].Contains("BEGINJOB [ 0 () ]") && valoresEncontrados1.ContainsKey("Name"))
-                            {
-                                lineasArchivo2[i] = lineasArchivo2[i].Replace("BEGINJOB [ 0 () ]", "BEGINJOB [ 0 (" + valoresEncontrados1["Name"] + ") ]");
-                            }
-                            else if (lineasArchivo2[i].Contains("OBJ") && valoresEncontrados1.ContainsKey("MarkingTextBegin"))
-                            {
-                                int inicio = lineasArchivo2[i].IndexOf("OBJ") + "OBJ".Length;
-                                int fin = lineasArchivo2[i].IndexOf("]", inicio);
-                                string parametros = lineasArchivo2[i].Substring(inicio, fin - inicio).Trim();
-                                string[] listaParametros = parametros.Split(' ');
-                                if (listaParametros.Length > 6)
-                                {
-                                    listaParametros[6] = "(" + valoresEncontrados1["MarkingTextBegin"].Split(',')[1].Trim('"') + ")";
-                                    string nuevosParametros = string.Join(" ", listaParametros);
-                                    lineasArchivo2[i] = lineasArchivo2[i].Replace(parametros, nuevosParametros);
-                                }
-                            }
-                        }
-
-                        string contenidoArchivo2 = string.Join("\n", lineasArchivo2);
-
-                        textBox_Comando.Text = contenidoArchivo2;
-
-                        command = textBox_Comando.Text.Trim();
-                        await conectar();
-                        imprimir();
-
-                        textBox_Comando.Text = "El mensaje modificado ha sido enviado";
-                    }
-                    else
-                    {
-                        textBox_Comando.Text = "El archivo2 no existe.";
-                    }
-                }
-                else
-                {
-                    textBox_Comando.Text = "El archivo1 no existe.";
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Ocurrió un error al leer el archivo: " + ex.Message);
-                Console.WriteLine("El error ocurrió en la línea: " + new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber());
-            }
-        }
 
         private async void button_Encender_Click(object sender, EventArgs e)
         {
