@@ -38,15 +38,14 @@ namespace Aplicacion1
             textBox_Puerto.Enabled = false;
             label_serial.Visible = false;
             label_velocidad.Visible = false;
-            textBox_ruta_de_carpeta.Text = @"C:\Users\manue\OneDrive\Escritorio\programas_impresora\article.dds";
-            textBox_archivotxt.Text = @"C:\Users\manue\OneDrive\Escritorio\Archivo\Archivo.txt";
             button_leer.Visible = true;
-            
 
+            textBox_archivotxt.Text = @"C:\Users\manue\OneDrive\Escritorio\Archivo";
+            textBox_ruta_de_carpeta.Text = @"C:\Users\manue\OneDrive\Escritorio\programas_impresora\article.dds";
 
             FileSystemWatcher watcher = new FileSystemWatcher();
-            watcher.Path = Path.GetDirectoryName(textBox_ruta_de_carpeta.Text.Trim()); // Observa el directorio del archivo
-            watcher.Filter = Path.GetFileName(textBox_ruta_de_carpeta.Text.Trim()); // Observa específicamente este archivo
+            watcher.Path = Path.GetDirectoryName(@"C:\Users\manue\OneDrive\Escritorio\programas_impresora\article.dds"); // Observa el directorio del archivo
+            watcher.Filter = Path.GetFileName(@"C:\Users\manue\OneDrive\Escritorio\programas_impresora\article.dds"); // Observa específicamente este archivo
             watcher.Deleted += OnDeleted;
             watcher.Created += OnCreated;
 
@@ -90,7 +89,7 @@ namespace Aplicacion1
             textBox_Respuesta.Enabled = true;
             textBox_IP.Text = "172.16.23.97";
             textBox_Puerto.Text = "3000";
-            textBox_ruta_de_carpeta.Text = @"C:\Users\manue\OneDrive\Escritorio\programas_impresora\article.dds";
+            
 
 
             serial = false;
@@ -131,20 +130,20 @@ namespace Aplicacion1
                         }
                     }
 
-                    string plantilla = @"
-                    BEGINLJSCRIPT [(V01.06.00.31)]
-                    JLPAR [70 1 0 3 10 180 0 12500 00:00 1 7000 0 0 1000 0 0]
-                    VISION [ 0 1 0 55000 3 5 3 5 0 ]
-                    BEGINJOB [ 0 (|_BEGINJOB_|) ]
-                    JOBPAR [ |_JOBPAR1_| 2 40000 320 0 0 0 1 1 0 -1 ({09E0BA11-8ADB-1E0E-B02B-55C7F102F9EC}) 1 1 55000 1 2 0 1 0 0 0 1 0 0 ]
-                    OBJ [1 0 0 0 (ISO1_7x5)  (|_OBJ1_|) 2 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
-                    JOBPAR [ |_JOBPAR2_| 2 40000 320 0 0 0 1 1 0 -1 ({09E0BA11-8ADB-1E0E-B02B-55C7F102F9EC}) 1 1 55000 1 2 0 1 0 0 0 1 0 0 ]
-                    OBJ [1 0 0 0 (ISO1_7x5)  (|_OBJ2_|) 2 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
-                    JOBPAR [ |_JOBPAR3_| 2 40000 320 0 0 0 1 1 0 -1 ({09E0BA11-8ADB-1E0E-B02B-55C7F102F9EC}) 1 1 55000 1 2 0 1 0 0 0 1 0 0 ]
-                    OBJ [1 0 0 0 (ISO1_7x5)  (|_OBJ3_|) 2 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
-                    ENDJOB []
-                    ENDLJSCRIPT []     
-                    ";
+string plantilla = @"
+BEGINLJSCRIPT [(V01.06.00.31)]
+JLPAR [70 1 0 3 10 180 0 12500 00:00 1 7000 0 0 1000 0 0]
+VISION [ 0 1 0 55000 3 5 3 5 0 ]
+BEGINJOB [ 0 (|_BEGINJOB_|) ]
+JOBPAR [ |_JOBPAR1_| 2 40000 320 0 0 0 1 1 0 -1 ({09E0BA11-8ADB-1E0E-B02B-55C7F102F9EC}) 1 1 55000 1 2 0 1 0 0 0 1 0 0 ]
+OBJ [1 0 0 0 (ISO1_7x5)  (|_OBJ1_|) 2 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
+JOBPAR [ |_JOBPAR2_| 2 40000 320 0 0 0 1 1 0 -1 ({09E0BA11-8ADB-1E0E-B02B-55C7F102F9EC}) 1 1 55000 1 2 0 1 0 0 0 1 0 0 ]
+OBJ [1 0 0 0 (ISO1_7x5)  (|_OBJ2_|) 2 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
+JOBPAR [ |_JOBPAR3_| 2 40000 320 0 0 0 1 1 0 -1 ({09E0BA11-8ADB-1E0E-B02B-55C7F102F9EC}) 1 1 55000 1 2 0 1 0 0 0 1 0 0 ]
+OBJ [1 0 0 0 (ISO1_7x5)  (|_OBJ3_|) 2 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
+ENDJOB []
+ENDLJSCRIPT []     
+";
 
                     Dictionary<string, string> parametros = new Dictionary<string, string>();
                     parametros.Add("|_BEGINJOB_|", valoresEncontrados1["Name"][0]);
@@ -230,7 +229,43 @@ namespace Aplicacion1
 
             }
         }
-      
+
+        private void button_dds_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog_dds.ShowDialog() == DialogResult.OK)
+            {
+                // Obtener la ruta del archivo seleccionado
+                string filePath = openFileDialog_dds.FileName;
+
+                // Obtener el nombre del archivo
+                string fileName = Path.GetFileName(filePath);
+
+                textBox_ruta_de_carpeta.Text = filePath;
+                
+                // Aquí puedes trabajar con el archivo seleccionado
+                // Por ejemplo, leer el archivo
+                string fileContent = File.ReadAllText(filePath);
+            }
+        }
+
+        private void button1_txt_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog_txt.ShowDialog() == DialogResult.OK)
+            {
+                // Obtener la ruta del archivo seleccionado
+                string filePath = openFileDialog_txt.FileName;
+
+                // Obtener el nombre del archivo
+                string fileName = Path.GetFileName(filePath);
+
+                textBox_archivotxt.Text = filePath;
+
+                // Aquí puedes trabajar con el archivo seleccionado
+                // Por ejemplo, leer el archivo
+                string fileContent = File.ReadAllText(filePath);
+            }
+
+        }
 
         private async void button_Encender_Click(object sender, EventArgs e)
         {

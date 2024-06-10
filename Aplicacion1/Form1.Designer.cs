@@ -55,6 +55,10 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button_Limpiar = new System.Windows.Forms.Button();
             this.textBox_Respuesta = new System.Windows.Forms.TextBox();
+            this.button_dds = new System.Windows.Forms.Button();
+            this.button1_txt = new System.Windows.Forms.Button();
+            this.openFileDialog_dds = new System.Windows.Forms.OpenFileDialog();
+            this.openFileDialog_txt = new System.Windows.Forms.OpenFileDialog();
             this.groupBox_Configuracion_comunicacion.SuspendLayout();
             this.groupBox_Botonesdecontrol.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -123,6 +127,8 @@
             // groupBox_Configuracion_comunicacion
             // 
             this.groupBox_Configuracion_comunicacion.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.groupBox_Configuracion_comunicacion.Controls.Add(this.button1_txt);
+            this.groupBox_Configuracion_comunicacion.Controls.Add(this.button_dds);
             this.groupBox_Configuracion_comunicacion.Controls.Add(this.textBox_archivotxt);
             this.groupBox_Configuracion_comunicacion.Controls.Add(this.label_ruta_archivo);
             this.groupBox_Configuracion_comunicacion.Controls.Add(this.textBox_ruta_de_carpeta);
@@ -148,7 +154,7 @@
             // 
             this.textBox_archivotxt.Location = new System.Drawing.Point(237, 265);
             this.textBox_archivotxt.Name = "textBox_archivotxt";
-            this.textBox_archivotxt.Size = new System.Drawing.Size(250, 32);
+            this.textBox_archivotxt.Size = new System.Drawing.Size(185, 32);
             this.textBox_archivotxt.TabIndex = 14;
             // 
             // label_ruta_archivo
@@ -165,7 +171,7 @@
             // 
             this.textBox_ruta_de_carpeta.Location = new System.Drawing.Point(237, 209);
             this.textBox_ruta_de_carpeta.Name = "textBox_ruta_de_carpeta";
-            this.textBox_ruta_de_carpeta.Size = new System.Drawing.Size(250, 32);
+            this.textBox_ruta_de_carpeta.Size = new System.Drawing.Size(185, 32);
             this.textBox_ruta_de_carpeta.TabIndex = 12;
             // 
             // label1
@@ -361,6 +367,35 @@
             this.textBox_Respuesta.Size = new System.Drawing.Size(1432, 309);
             this.textBox_Respuesta.TabIndex = 0;
             // 
+            // button_dds
+            // 
+            this.button_dds.Location = new System.Drawing.Point(429, 209);
+            this.button_dds.Name = "button_dds";
+            this.button_dds.Size = new System.Drawing.Size(58, 32);
+            this.button_dds.TabIndex = 15;
+            this.button_dds.Text = "....";
+            this.button_dds.UseVisualStyleBackColor = true;
+            this.button_dds.Click += new System.EventHandler(this.button_dds_Click);
+            // 
+            // button1_txt
+            // 
+            this.button1_txt.Location = new System.Drawing.Point(429, 265);
+            this.button1_txt.Name = "button1_txt";
+            this.button1_txt.Size = new System.Drawing.Size(58, 32);
+            this.button1_txt.TabIndex = 16;
+            this.button1_txt.Text = "...";
+            this.button1_txt.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button1_txt.UseVisualStyleBackColor = true;
+            this.button1_txt.Click += new System.EventHandler(this.button1_txt_Click);
+            // 
+            // openFileDialog_dds
+            // 
+            this.openFileDialog_dds.FileName = "openFileDialog1";
+            // 
+            // openFileDialog_txt
+            // 
+            this.openFileDialog_txt.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -413,6 +448,10 @@
         private System.Windows.Forms.TextBox textBox_ruta_de_carpeta;
         private System.Windows.Forms.TextBox textBox_archivotxt;
         private System.Windows.Forms.Label label_ruta_archivo;
+        private System.Windows.Forms.Button button1_txt;
+        private System.Windows.Forms.Button button_dds;
+        private System.Windows.Forms.OpenFileDialog openFileDialog_dds;
+        private System.Windows.Forms.OpenFileDialog openFileDialog_txt;
     }
 }
 
