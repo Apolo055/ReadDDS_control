@@ -25,7 +25,8 @@ namespace Aplicacion1
         private SimpleTcpClient client; // palabra clave de la instancia
         bool serial = false, SSH = false; // variables utilizadas para funcionamiento de la aplicacion
         string command = "", response = ""; // variable para almacenar la respuesta y mensaje que se envia entre el usuario y la maquina
-
+        string filePath2;
+        string filePath1;
         string Encender = "^0!PO", Apagar = "^0!PF", Apertura = "^0!NO", Cierre = "^0!NC", Inicio = "^0!GO", Paro = "^0!ST", Descarga = "^0?JB";
         // valiables que almacenan comando especificos para mandar a la maquina atraves de botones de control
         string ruta =" ";
@@ -40,17 +41,8 @@ namespace Aplicacion1
             label_velocidad.Visible = false;
             button_leer.Visible = true;
 
-            textBox_archivotxt.Text = @"C:\Users\manue\OneDrive\Escritorio\Archivo";
-            textBox_ruta_de_carpeta.Text = @"C:\Users\manue\OneDrive\Escritorio\programas_impresora\article.dds";
-
-            FileSystemWatcher watcher = new FileSystemWatcher();
-            watcher.Path = Path.GetDirectoryName(@"C:\Users\manue\OneDrive\Escritorio\programas_impresora\article.dds"); // Observa el directorio del archivo
-            watcher.Filter = Path.GetFileName(@"C:\Users\manue\OneDrive\Escritorio\programas_impresora\article.dds"); // Observa específicamente este archivo
-            watcher.Deleted += OnDeleted;
-            watcher.Created += OnCreated;
-
-            // Iniciar la observación
-            watcher.EnableRaisingEvents = true;
+          
+           
 
 
 
@@ -100,9 +92,9 @@ namespace Aplicacion1
         {
             try
             {
-                if (File.Exists(textBox_ruta_de_carpeta.Text.Trim()))
+                if (File.Exists(filePath1))
                 {
-                    string contenidoArchivo1 = File.ReadAllText(textBox_ruta_de_carpeta.Text.Trim());
+                    string contenidoArchivo1 = File.ReadAllText(filePath1);
 
                     Dictionary<string, string[]> valoresEncontrados1 = new Dictionary<string, string[]>();
                     foreach (string linea in contenidoArchivo1.Split('\n'))
@@ -235,16 +227,25 @@ ENDLJSCRIPT []
             if (openFileDialog_dds.ShowDialog() == DialogResult.OK)
             {
                 // Obtener la ruta del archivo seleccionado
-                string filePath = openFileDialog_dds.FileName;
+                 filePath1 = openFileDialog_dds.FileName;
 
                 // Obtener el nombre del archivo
-                string fileName = Path.GetFileName(filePath);
+                string fileName = Path.GetFileName(filePath1);
 
-                textBox_ruta_de_carpeta.Text = filePath;
-                
+
+                textBox_ruta_de_carpeta.Text = fileName;
+                FileSystemWatcher watcher = new FileSystemWatcher();
+                watcher.Path = Path.GetDirectoryName(filePath1); // Observa el directorio del archivo
+                watcher. Filter = Path.GetFileName(filePath1); // Observa específicamente este archivo
+                watcher.Deleted += OnDeleted;
+                watcher.Created += OnCreated;
+
+                // Iniciar la observación
+                watcher.EnableRaisingEvents = true;
+
                 // Aquí puedes trabajar con el archivo seleccionado
                 // Por ejemplo, leer el archivo
-                string fileContent = File.ReadAllText(filePath);
+                // string fileContent = File.ReadAllText(filePath);
             }
         }
 
@@ -253,16 +254,16 @@ ENDLJSCRIPT []
             if (openFileDialog_txt.ShowDialog() == DialogResult.OK)
             {
                 // Obtener la ruta del archivo seleccionado
-                string filePath = openFileDialog_txt.FileName;
+                 filePath2 = openFileDialog_txt.FileName;
 
                 // Obtener el nombre del archivo
-                string fileName = Path.GetFileName(filePath);
+                string fileName = Path.GetFileName(filePath2);
 
-                textBox_archivotxt.Text = filePath;
+                textBox_archivotxt.Text = fileName;
 
                 // Aquí puedes trabajar con el archivo seleccionado
                 // Por ejemplo, leer el archivo
-                string fileContent = File.ReadAllText(filePath);
+                //string fileContent = File.ReadAllText(filePath);
             }
 
         }
