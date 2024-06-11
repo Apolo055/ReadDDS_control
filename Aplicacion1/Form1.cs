@@ -26,6 +26,7 @@ namespace Aplicacion1
         bool serial = false, SSH = false; // variables utilizadas para funcionamiento de la aplicacion
         string command = "", response = ""; // variable para almacenar la respuesta y mensaje que se envia entre el usuario y la maquina
         string filePath2;
+        string acum=" ";
         string filePath1;
         string Encender = "^0!PO", Apagar = "^0!PF", Apertura = "^0!NO", Cierre = "^0!NC", Inicio = "^0!GO", Paro = "^0!ST", Descarga = "^0?JB";
         // valiables que almacenan comando especificos para mandar a la maquina atraves de botones de control
@@ -87,89 +88,6 @@ namespace Aplicacion1
             serial = false;
             SSH = true;
         }
-
-        /*  private async void button_leer_Click(object sender, EventArgs e)
-          {
-              try
-              {
-                  if (File.Exists(filePath1))
-                  {
-                      string contenidoArchivo1 = File.ReadAllText(filePath1);
-
-                      Dictionary<string, string[]> valoresEncontrados1 = new Dictionary<string, string[]>();
-                      foreach (string linea in contenidoArchivo1.Split('\n'))
-                      {
-                          string[] partes = linea.Split('=');
-                          if (partes.Length > 1)
-                          {
-                              string clave = partes[0].Trim();
-                              string valor = partes[1].Trim();
-                              if (clave == "MarkingTextBegin" || clave == "MarkingTextEndless" || clave == "MarkingTextEnd")
-                              {
-                                  if (valor.Contains(","))
-                                  {
-                                      string[] valores = valor.Split(',');
-                                      valores[0] = valores[0].Trim('"');
-                                      valores[1] = valores[1].Trim('"');
-                                      valoresEncontrados1[clave] = valores;
-                                  }
-                              }
-                              else if (clave == "Name")
-                              {
-                                  valor = valor.Trim('"');
-                                  valoresEncontrados1[clave] = new string[] { valor };
-                              }
-                          }
-                      }
-
-  string plantilla = @"
-  ^0*BEGINLJSCRIPT [(V01.06.00.26)]
-  ^0*JLPAR [80 0 0 0 80 0 0 0 00:00 0 7000 0 0 0 0]
-  ^0*VISION [ 0 1 1 55000 3 5 3 5 0 ]
-  ^0*BEGINJOB [ 0 (|_BEGINJOB_|) ]
-  ^0*JOBPAR [ 1000 65535 130000 250 0 0 0 1 0 0 -1 ({B5F013C6-1F3D-53FC-8C1D-E8CC699050E4}) 1 0 0 1 1 0 0 0 0 0 1 0 ]
-  ^0*OBJ [3 |_OBJ1_| 16 0 (ISO1_7X5)  (|_OBJ2_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
-  ^0*OBJ [3 |_OBJ3_| 16 0 (ISO1_7X5) (|_OBJ4_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
-  ^0*OBJ [3 |_OBJ5_| 16 0 (ISO1_7X5) (|_OBJ6_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
-  ^0*ENDJOB []
-  ^0*ENDLJSCRIPT []     
-  ";
-
-                      Dictionary<string, string> parametros = new Dictionary<string, string>();
-                      parametros.Add("|_BEGINJOB_|", valoresEncontrados1["Name"][0]);
-                      parametros.Add("|_OBJ1_|", valoresEncontrados1["MarkingTextBegin"][0]);
-                      parametros.Add("|_OBJ2_|", valoresEncontrados1["MarkingTextBegin"][1]);
-                      parametros.Add("|_OBJ3_|", valoresEncontrados1["MarkingTextEndless"][0]);
-                      parametros.Add("|_OBJ4_|", valoresEncontrados1["MarkingTextEndless"][1]);
-                      parametros.Add("|_OBJ5_|", valoresEncontrados1["MarkingTextEnd"][0]);
-                      parametros.Add("|_OBJ6_|", valoresEncontrados1["MarkingTextEnd"][1]);
-
-                      foreach (KeyValuePair<string, string> item in parametros)
-                      {
-                          plantilla = plantilla.Replace(item.Key, item.Value);
-                      }
-
-                      textBox_Comando.Text = plantilla;
-
-                      command = textBox_Comando.Text.Trim();
-                      await conectar();
-                      imprimir();
-
-                      textBox_Comando.Text = "El mensaje modificado ha sido enviado";
-                  }
-                  else
-                  {
-                      textBox_Comando.Text = "El archivo1 no existe.";
-                  }
-              }
-              catch (Exception ex)
-              {
-                  Console.WriteLine("Ocurrió un error al leer el archivo: " + ex.Message);
-                  Console.WriteLine("El error ocurrió en la línea: " + new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber());
-              }
-          }
-
-          */
 
         private async void button_leer_Click(object sender, EventArgs e)
         {
@@ -243,28 +161,37 @@ namespace Aplicacion1
 
                     Dictionary<string, string> parametros = new Dictionary<string, string>();
                     parametros.Add("|_BEGINJOB_|", valoresEncontrados1["Name"][0]);
+                    int acumulador = 0;
 
                     for (int i = 1; i <= N_OBJ; i++)
                     {
+
+
                         if (i == 1)
                         {
-                            parametros.Add($"|_OBJ{i}_|", "x");
+                            parametros.Add($"|_OBJ{i}_|", mark1);
                             parametros.Add($"|_OBJY_I|", valoresEncontrados1["MarkingTextBegin"][1]);
                             parametros.Add($"|_OBJX1_|", valoresEncontrados1["MarkingTextEndless"][1]);
+                            acumulador = resultado.Item1;
                         }
                         else if (i == N_OBJ)
                         {
-                            parametros.Add($"|_OBJ{i}_|", "x");
+                            acumulador += (10 + resultado.Item6); acum = acumulador.ToString();
+                            parametros.Add($"|_OBJ{i}_|", acum);
                             parametros.Add($"|_OBJYE_|", valoresEncontrados1["MarkingTextEnd"][1]);
                             if (i == N_OBJ)
                             {
-                                parametros.Add($"|_OBJ{i+1}_|", "x");
+                                acumulador +=  resultado.Item7; acum = acumulador.ToString();
+                                parametros.Add($"|_OBJ{i+1}_|", acum);
                             }
 
                         }
                         else
                         {
-                            parametros.Add($"|_OBJ{i}_|", "x");
+                            if (i == 2) { acumulador += resultado.Item6; acum = acumulador.ToString(); }
+                            if (i == 3) { acumulador += (10 + resultado.Item6); acum = acumulador.ToString(); }
+                            if (i >3 && i< N_OBJ) { acumulador += (10 + resultado.Item6); acum = acumulador.ToString(); }
+                            parametros.Add($"|_OBJ{i}_|", acum);
                             parametros.Add($"|_OBJX{i}_|", valoresEncontrados1["MarkingTextEndless"][1]);
                         }
                     }
@@ -296,7 +223,7 @@ namespace Aplicacion1
             }
         }
 
-        private (int, int, int, int) Operacion(string X, string Y, string Z, string W)
+        private (int, int, int, int,int,int,int) Operacion(string X, string Y, string Z, string W)
         {
             if (int.TryParse(X, out int dtX) && int.TryParse(Y, out int dtY) && int.TryParse(Z, out int dtZ) && int.TryParse(W, out int dtW))
             {
@@ -307,12 +234,12 @@ namespace Aplicacion1
                 int N_OBJ = Distancia_disponible / Dist_M;
 
                 // Retorna los cuatro valores como una tupla
-                return (Dist_I, Dist_F, Dist_M, N_OBJ);
+                return (Dist_I, Dist_F, Dist_M, N_OBJ,dtY,dtZ,dtW);
             }
             else
             {
                 Console.WriteLine("No se pudo convertir uno o más valores a un entero.");
-                return (0, 0, 0, 0); // Retorna una tupla de ceros si hay un error
+                return (0, 0, 0, 0,0,0,0); // Retorna una tupla de ceros si hay un error
             }
         }
 
