@@ -88,6 +88,89 @@ namespace Aplicacion1
             SSH = true;
         }
 
+        /*  private async void button_leer_Click(object sender, EventArgs e)
+          {
+              try
+              {
+                  if (File.Exists(filePath1))
+                  {
+                      string contenidoArchivo1 = File.ReadAllText(filePath1);
+
+                      Dictionary<string, string[]> valoresEncontrados1 = new Dictionary<string, string[]>();
+                      foreach (string linea in contenidoArchivo1.Split('\n'))
+                      {
+                          string[] partes = linea.Split('=');
+                          if (partes.Length > 1)
+                          {
+                              string clave = partes[0].Trim();
+                              string valor = partes[1].Trim();
+                              if (clave == "MarkingTextBegin" || clave == "MarkingTextEndless" || clave == "MarkingTextEnd")
+                              {
+                                  if (valor.Contains(","))
+                                  {
+                                      string[] valores = valor.Split(',');
+                                      valores[0] = valores[0].Trim('"');
+                                      valores[1] = valores[1].Trim('"');
+                                      valoresEncontrados1[clave] = valores;
+                                  }
+                              }
+                              else if (clave == "Name")
+                              {
+                                  valor = valor.Trim('"');
+                                  valoresEncontrados1[clave] = new string[] { valor };
+                              }
+                          }
+                      }
+
+  string plantilla = @"
+  ^0*BEGINLJSCRIPT [(V01.06.00.26)]
+  ^0*JLPAR [80 0 0 0 80 0 0 0 00:00 0 7000 0 0 0 0]
+  ^0*VISION [ 0 1 1 55000 3 5 3 5 0 ]
+  ^0*BEGINJOB [ 0 (|_BEGINJOB_|) ]
+  ^0*JOBPAR [ 1000 65535 130000 250 0 0 0 1 0 0 -1 ({B5F013C6-1F3D-53FC-8C1D-E8CC699050E4}) 1 0 0 1 1 0 0 0 0 0 1 0 ]
+  ^0*OBJ [3 |_OBJ1_| 16 0 (ISO1_7X5)  (|_OBJ2_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
+  ^0*OBJ [3 |_OBJ3_| 16 0 (ISO1_7X5) (|_OBJ4_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
+  ^0*OBJ [3 |_OBJ5_| 16 0 (ISO1_7X5) (|_OBJ6_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
+  ^0*ENDJOB []
+  ^0*ENDLJSCRIPT []     
+  ";
+
+                      Dictionary<string, string> parametros = new Dictionary<string, string>();
+                      parametros.Add("|_BEGINJOB_|", valoresEncontrados1["Name"][0]);
+                      parametros.Add("|_OBJ1_|", valoresEncontrados1["MarkingTextBegin"][0]);
+                      parametros.Add("|_OBJ2_|", valoresEncontrados1["MarkingTextBegin"][1]);
+                      parametros.Add("|_OBJ3_|", valoresEncontrados1["MarkingTextEndless"][0]);
+                      parametros.Add("|_OBJ4_|", valoresEncontrados1["MarkingTextEndless"][1]);
+                      parametros.Add("|_OBJ5_|", valoresEncontrados1["MarkingTextEnd"][0]);
+                      parametros.Add("|_OBJ6_|", valoresEncontrados1["MarkingTextEnd"][1]);
+
+                      foreach (KeyValuePair<string, string> item in parametros)
+                      {
+                          plantilla = plantilla.Replace(item.Key, item.Value);
+                      }
+
+                      textBox_Comando.Text = plantilla;
+
+                      command = textBox_Comando.Text.Trim();
+                      await conectar();
+                      imprimir();
+
+                      textBox_Comando.Text = "El mensaje modificado ha sido enviado";
+                  }
+                  else
+                  {
+                      textBox_Comando.Text = "El archivo1 no existe.";
+                  }
+              }
+              catch (Exception ex)
+              {
+                  Console.WriteLine("Ocurrió un error al leer el archivo: " + ex.Message);
+                  Console.WriteLine("El error ocurrió en la línea: " + new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber());
+              }
+          }
+
+          */
+
         private async void button_leer_Click(object sender, EventArgs e)
         {
             try
@@ -114,7 +197,7 @@ namespace Aplicacion1
                                     valoresEncontrados1[clave] = valores;
                                 }
                             }
-                            else if (clave == "Name")
+                            else if (clave == "Name" || clave == "WireLength")
                             {
                                 valor = valor.Trim('"');
                                 valoresEncontrados1[clave] = new string[] { valor };
@@ -122,29 +205,71 @@ namespace Aplicacion1
                         }
                     }
 
-string plantilla = @"
-BEGINLJSCRIPT [(V01.06.00.31)]
-JLPAR [70 1 0 3 10 180 0 12500 00:00 1 7000 0 0 1000 0 0]
-VISION [ 0 1 0 55000 3 5 3 5 0 ]
-BEGINJOB [ 0 (|_BEGINJOB_|) ]
-JOBPAR [ |_JOBPAR1_| 2 40000 320 0 0 0 1 1 0 -1 ({09E0BA11-8ADB-1E0E-B02B-55C7F102F9EC}) 1 1 55000 1 2 0 1 0 0 0 1 0 0 ]
-OBJ [1 0 0 0 (ISO1_7x5)  (|_OBJ1_|) 2 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
-JOBPAR [ |_JOBPAR2_| 2 40000 320 0 0 0 1 1 0 -1 ({09E0BA11-8ADB-1E0E-B02B-55C7F102F9EC}) 1 1 55000 1 2 0 1 0 0 0 1 0 0 ]
-OBJ [1 0 0 0 (ISO1_7x5)  (|_OBJ2_|) 2 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
-JOBPAR [ |_JOBPAR3_| 2 40000 320 0 0 0 1 1 0 -1 ({09E0BA11-8ADB-1E0E-B02B-55C7F102F9EC}) 1 1 55000 1 2 0 1 0 0 0 1 0 0 ]
-OBJ [1 0 0 0 (ISO1_7x5)  (|_OBJ3_|) 2 0 0 0 0 1 0 0 0 0 0 0 ()  () 0 0 () ]
-ENDJOB []
-ENDLJSCRIPT []     
+                    string Distancia_Total = valoresEncontrados1["WireLength"][0];
+                    string mark1 = valoresEncontrados1["MarkingTextBegin"][0];
+                    string mark2 = valoresEncontrados1["MarkingTextEndless"][0];
+                    string mark3 = valoresEncontrados1["MarkingTextEnd"][0];
+
+                    var resultado = Operacion(Distancia_Total,mark1,mark2,mark3);
+
+                    // Acceder al primer valor
+                    int Dist_I = resultado.Item1;
+
+                    // Acceder al segundo valor
+                    int Dist_F = resultado.Item2;
+
+                    // Acceder al tercer valor
+                    int Dist_M = resultado.Item3;
+
+                    // Acceder al cuarto valor
+                    int N_OBJ = resultado.Item4;
+
+                    string plantilla = @"
+^0*BEGINLJSCRIPT [(V01.06.00.26)]
+^0*JLPAR [80 0 0 0 80 0 0 0 00:00 0 7000 0 0 0 0]
+^0*VISION [ 0 1 1 55000 3 5 3 5 0 ]
+^0*BEGINJOB [ 0 (|_BEGINJOB_|) ]
+^0*JOBPAR [ 1000 65535 130000 250 0 0 0 1 0 0 -1 ({B5F013C6-1F3D-53FC-8C1D-E8CC699050E4}) 1 0 0 1 1 0 0 0 0 0 1 0 ]
+^0*OBJ [3 |_OBJ1_| 16 0 (ISO1_7X5)  (|_OBJY_I|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
 ";
+
+                    for (int i = 2; i <= N_OBJ; i++)
+                    {
+                        plantilla += $"^0*OBJ [3 |_OBJ{i}_| 16 0 (ISO1_7X5)  (|_OBJX{i-1}_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]\n";
+                    }
+
+                    plantilla += $"^0*OBJ [3 |_OBJ{N_OBJ + 1}_| 16 0 (ISO1_7X5)  (|_OBJYE_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]\n^0*ENDJOB []\n^0*ENDLJSCRIPT []";
+
 
                     Dictionary<string, string> parametros = new Dictionary<string, string>();
                     parametros.Add("|_BEGINJOB_|", valoresEncontrados1["Name"][0]);
-                    parametros.Add("|_JOBPAR1_|", valoresEncontrados1["MarkingTextBegin"][0]);
-                    parametros.Add("|_OBJ1_|", valoresEncontrados1["MarkingTextBegin"][1]);
-                    parametros.Add("|_JOBPAR2_|", valoresEncontrados1["MarkingTextEndless"][0]);
-                    parametros.Add("|_OBJ2_|", valoresEncontrados1["MarkingTextEndless"][1]);
-                    parametros.Add("|_JOBPAR3_|", valoresEncontrados1["MarkingTextEnd"][0]);
-                    parametros.Add("|_OBJ3_|", valoresEncontrados1["MarkingTextEnd"][1]);
+
+                    for (int i = 1; i <= N_OBJ; i++)
+                    {
+                        if (i == 1)
+                        {
+                            parametros.Add($"|_OBJ{i}_|", "x");
+                            parametros.Add($"|_OBJY_I|", valoresEncontrados1["MarkingTextBegin"][1]);
+                            parametros.Add($"|_OBJX1_|", valoresEncontrados1["MarkingTextEndless"][1]);
+                        }
+                        else if (i == N_OBJ)
+                        {
+                            parametros.Add($"|_OBJ{i}_|", "x");
+                            parametros.Add($"|_OBJYE_|", valoresEncontrados1["MarkingTextEnd"][1]);
+                            if (i == N_OBJ)
+                            {
+                                parametros.Add($"|_OBJ{i+1}_|", "x");
+                            }
+
+                        }
+                        else
+                        {
+                            parametros.Add($"|_OBJ{i}_|", "x");
+                            parametros.Add($"|_OBJX{i}_|", valoresEncontrados1["MarkingTextEndless"][1]);
+                        }
+                    }
+
+
 
                     foreach (KeyValuePair<string, string> item in parametros)
                     {
@@ -170,6 +295,27 @@ ENDLJSCRIPT []
                 Console.WriteLine("El error ocurrió en la línea: " + new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber());
             }
         }
+
+        private (int, int, int, int) Operacion(string X, string Y, string Z, string W)
+        {
+            if (int.TryParse(X, out int dtX) && int.TryParse(Y, out int dtY) && int.TryParse(Z, out int dtZ) && int.TryParse(W, out int dtW))
+            {
+                int Dist_I = dtY + 10;
+                int Dist_F = dtW + 10;
+                int Dist_M = dtZ + 10;
+                int Distancia_disponible = dtX - ((Dist_I) + (Dist_F));
+                int N_OBJ = Distancia_disponible / Dist_M;
+
+                // Retorna los cuatro valores como una tupla
+                return (Dist_I, Dist_F, Dist_M, N_OBJ);
+            }
+            else
+            {
+                Console.WriteLine("No se pudo convertir uno o más valores a un entero.");
+                return (0, 0, 0, 0); // Retorna una tupla de ceros si hay un error
+            }
+        }
+
 
         private void imprimir() // metodo para imprimir respuesta y mensaje 
         {
