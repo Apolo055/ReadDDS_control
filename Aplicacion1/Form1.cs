@@ -41,9 +41,10 @@ namespace Aplicacion1
             label_serial.Visible = false;
             label_velocidad.Visible = false;
             button_leer.Visible = true;
+            label_serial.Visible = false;
 
-          
-           
+
+
 
 
 
@@ -148,15 +149,15 @@ namespace Aplicacion1
 ^0*VISION [ 0 1 1 55000 3 5 3 5 0 ]
 ^0*BEGINJOB [ 0 (|_BEGINJOB_|) ]
 ^0*JOBPAR [ 1000 65535 130000 250 0 0 0 1 0 0 -1 ({B5F013C6-1F3D-53FC-8C1D-E8CC699050E4}) 1 0 0 1 1 0 0 0 0 0 1 0 ]
-^0*OBJ [3 |_OBJ1_| 16 0 (ISO1_7X5)  (|_OBJY_I|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
+^0*OBJ [1 |_OBJ1_| 16 0 (ISO1_7X5)  (|_OBJY_I|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
 ";
 
                     for (int i = 2; i <= N_OBJ; i++)
                     {
-                        plantilla += $"^0*OBJ [3 |_OBJ{i}_| 16 0 (ISO1_7X5)  (|_OBJX{i-1}_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]\n";
+                        plantilla += $"^0*OBJ [{i} |_OBJ{i}_| 16 0 (ISO1_7X5)  (|_OBJX{i-1}_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]\n";
                     }
 
-                    plantilla += $"^0*OBJ [3 |_OBJ{N_OBJ + 1}_| 16 0 (ISO1_7X5)  (|_OBJYE_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]\n^0*ENDJOB []\n^0*ENDLJSCRIPT []";
+                    plantilla += $"^0*OBJ [{N_OBJ+1} |_OBJ{N_OBJ + 1}_| 16 0 (ISO1_7X5)  (|_OBJYE_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]\n^0*ENDJOB []\n^0*ENDLJSCRIPT []";
 
 
                     Dictionary<string, string> parametros = new Dictionary<string, string>();
@@ -176,12 +177,13 @@ namespace Aplicacion1
                         }
                         else if (i == N_OBJ)
                         {
-                            acumulador += (10 + resultado.Item6); acum = acumulador.ToString();
+                            acumulador += (60 + resultado.Item6); acum = acumulador.ToString();
                             parametros.Add($"|_OBJ{i}_|", acum);
                             parametros.Add($"|_OBJYE_|", valoresEncontrados1["MarkingTextEnd"][1]);
                             if (i == N_OBJ)
                             {
-                                acumulador +=  resultado.Item7; acum = acumulador.ToString();
+                                acumulador = 0;
+                                acumulador =  resultado.Item8; acum = acumulador.ToString();
                                 parametros.Add($"|_OBJ{i+1}_|", acum);
                             }
 
@@ -189,8 +191,8 @@ namespace Aplicacion1
                         else
                         {
                             if (i == 2) { acumulador += resultado.Item6; acum = acumulador.ToString(); }
-                            if (i == 3) { acumulador += (10 + resultado.Item6); acum = acumulador.ToString(); }
-                            if (i >3 && i< N_OBJ) { acumulador += (10 + resultado.Item6); acum = acumulador.ToString(); }
+                            if (i == 3) { acumulador += (60 + resultado.Item6); acum = acumulador.ToString(); }
+                            if (i >3 && i< N_OBJ) { acumulador += (60 + resultado.Item6); acum = acumulador.ToString(); }
                             parametros.Add($"|_OBJ{i}_|", acum);
                             parametros.Add($"|_OBJX{i}_|", valoresEncontrados1["MarkingTextEndless"][1]);
                         }
@@ -223,23 +225,24 @@ namespace Aplicacion1
             }
         }
 
-        private (int, int, int, int,int,int,int) Operacion(string X, string Y, string Z, string W)
+        private (int, int, int, int,int,int,int,int) Operacion(string X, string Y, string Z, string W)
         {
             if (int.TryParse(X, out int dtX) && int.TryParse(Y, out int dtY) && int.TryParse(Z, out int dtZ) && int.TryParse(W, out int dtW))
             {
-                int Dist_I = dtY + 10;
-                int Dist_F = dtW + 10;
-                int Dist_M = dtZ + 10;
+                int Dist_I = dtY + 60;
+                int Dist_F = dtW + 60;
+                int Dist_M = dtZ + 60;
                 int Distancia_disponible = dtX - ((Dist_I) + (Dist_F));
                 int N_OBJ = Distancia_disponible / Dist_M;
+                int acumf = dtX - Dist_F;
 
                 // Retorna los cuatro valores como una tupla
-                return (Dist_I, Dist_F, Dist_M, N_OBJ,dtY,dtZ,dtW);
+                return (Dist_I, Dist_F, Dist_M, N_OBJ,dtY,dtZ,dtW,acumf);
             }
             else
             {
                 Console.WriteLine("No se pudo convertir uno o más valores a un entero.");
-                return (0, 0, 0, 0,0,0,0); // Retorna una tupla de ceros si hay un error
+                return (0, 0, 0, 0,0,0,0,0); // Retorna una tupla de ceros si hay un error
             }
         }
 

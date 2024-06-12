@@ -35,12 +35,12 @@
             this.textBox_Puerto = new System.Windows.Forms.TextBox();
             this.textBox_IP = new System.Windows.Forms.TextBox();
             this.groupBox_Configuracion_comunicacion = new System.Windows.Forms.GroupBox();
+            this.button1_txt = new System.Windows.Forms.Button();
+            this.button_dds = new System.Windows.Forms.Button();
             this.textBox_archivotxt = new System.Windows.Forms.TextBox();
             this.label_ruta_archivo = new System.Windows.Forms.Label();
             this.textBox_ruta_de_carpeta = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label_velocidad = new System.Windows.Forms.Label();
-            this.label_serial = new System.Windows.Forms.Label();
             this.textBox_Comando = new System.Windows.Forms.TextBox();
             this.groupBox_Botonesdecontrol = new System.Windows.Forms.GroupBox();
             this.button_leer = new System.Windows.Forms.Button();
@@ -55,10 +55,10 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button_Limpiar = new System.Windows.Forms.Button();
             this.textBox_Respuesta = new System.Windows.Forms.TextBox();
-            this.button_dds = new System.Windows.Forms.Button();
-            this.button1_txt = new System.Windows.Forms.Button();
             this.openFileDialog_dds = new System.Windows.Forms.OpenFileDialog();
             this.openFileDialog_txt = new System.Windows.Forms.OpenFileDialog();
+            this.label_serial = new System.Windows.Forms.Label();
+            this.label_velocidad = new System.Windows.Forms.Label();
             this.groupBox_Configuracion_comunicacion.SuspendLayout();
             this.groupBox_Botonesdecontrol.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -143,12 +143,33 @@
             this.groupBox_Configuracion_comunicacion.Controls.Add(this.radioButton_SSH);
             this.groupBox_Configuracion_comunicacion.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox_Configuracion_comunicacion.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.groupBox_Configuracion_comunicacion.Location = new System.Drawing.Point(33, 21);
+            this.groupBox_Configuracion_comunicacion.Location = new System.Drawing.Point(30, 37);
             this.groupBox_Configuracion_comunicacion.Name = "groupBox_Configuracion_comunicacion";
-            this.groupBox_Configuracion_comunicacion.Size = new System.Drawing.Size(512, 328);
+            this.groupBox_Configuracion_comunicacion.Size = new System.Drawing.Size(512, 264);
             this.groupBox_Configuracion_comunicacion.TabIndex = 10;
             this.groupBox_Configuracion_comunicacion.TabStop = false;
             this.groupBox_Configuracion_comunicacion.Text = "Configuracion de la cominicación";
+            // 
+            // button1_txt
+            // 
+            this.button1_txt.Location = new System.Drawing.Point(429, 265);
+            this.button1_txt.Name = "button1_txt";
+            this.button1_txt.Size = new System.Drawing.Size(58, 32);
+            this.button1_txt.TabIndex = 16;
+            this.button1_txt.Text = "...";
+            this.button1_txt.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button1_txt.UseVisualStyleBackColor = true;
+            this.button1_txt.Click += new System.EventHandler(this.button1_txt_Click);
+            // 
+            // button_dds
+            // 
+            this.button_dds.Location = new System.Drawing.Point(429, 209);
+            this.button_dds.Name = "button_dds";
+            this.button_dds.Size = new System.Drawing.Size(58, 32);
+            this.button_dds.TabIndex = 15;
+            this.button_dds.Text = "....";
+            this.button_dds.UseVisualStyleBackColor = true;
+            this.button_dds.Click += new System.EventHandler(this.button_dds_Click);
             // 
             // textBox_archivotxt
             // 
@@ -180,29 +201,9 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(14, 214);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(204, 25);
+            this.label1.Size = new System.Drawing.Size(126, 25);
             this.label1.TabIndex = 11;
-            this.label1.Text = "Ruta del archivo .dds :";
-            // 
-            // label_velocidad
-            // 
-            this.label_velocidad.AutoSize = true;
-            this.label_velocidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_velocidad.Location = new System.Drawing.Point(11, 159);
-            this.label_velocidad.Name = "label_velocidad";
-            this.label_velocidad.Size = new System.Drawing.Size(204, 26);
-            this.label_velocidad.TabIndex = 10;
-            this.label_velocidad.Text = "Velocidad (baudios)";
-            // 
-            // label_serial
-            // 
-            this.label_serial.AutoSize = true;
-            this.label_serial.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_serial.Location = new System.Drawing.Point(12, 109);
-            this.label_serial.Name = "label_serial";
-            this.label_serial.Size = new System.Drawing.Size(129, 26);
-            this.label_serial.TabIndex = 9;
-            this.label_serial.Text = "Linea serial:";
+            this.label1.Text = "Archivo dds :";
             // 
             // textBox_Comando
             // 
@@ -212,7 +213,7 @@
             this.textBox_Comando.Location = new System.Drawing.Point(19, 46);
             this.textBox_Comando.Multiline = true;
             this.textBox_Comando.Name = "textBox_Comando";
-            this.textBox_Comando.Size = new System.Drawing.Size(499, 248);
+            this.textBox_Comando.Size = new System.Drawing.Size(499, 187);
             this.textBox_Comando.TabIndex = 16;
             this.textBox_Comando.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_Comando_KeyDown);
             // 
@@ -228,16 +229,16 @@
             this.groupBox_Botonesdecontrol.Controls.Add(this.button_apagar);
             this.groupBox_Botonesdecontrol.Controls.Add(this.button_Encender);
             this.groupBox_Botonesdecontrol.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_Botonesdecontrol.Location = new System.Drawing.Point(574, 19);
+            this.groupBox_Botonesdecontrol.Location = new System.Drawing.Point(573, 37);
             this.groupBox_Botonesdecontrol.Name = "groupBox_Botonesdecontrol";
-            this.groupBox_Botonesdecontrol.Size = new System.Drawing.Size(358, 330);
+            this.groupBox_Botonesdecontrol.Size = new System.Drawing.Size(358, 264);
             this.groupBox_Botonesdecontrol.TabIndex = 20;
             this.groupBox_Botonesdecontrol.TabStop = false;
             this.groupBox_Botonesdecontrol.Text = "Control ";
             // 
             // button_leer
             // 
-            this.button_leer.Location = new System.Drawing.Point(202, 260);
+            this.button_leer.Location = new System.Drawing.Point(202, 214);
             this.button_leer.Name = "button_leer";
             this.button_leer.Size = new System.Drawing.Size(133, 39);
             this.button_leer.TabIndex = 7;
@@ -247,7 +248,7 @@
             // 
             // button_descarga
             // 
-            this.button_descarga.Location = new System.Drawing.Point(35, 260);
+            this.button_descarga.Location = new System.Drawing.Point(35, 214);
             this.button_descarga.Name = "button_descarga";
             this.button_descarga.Size = new System.Drawing.Size(140, 39);
             this.button_descarga.TabIndex = 6;
@@ -258,7 +259,7 @@
             // button_paro
             // 
             this.button_paro.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_paro.Location = new System.Drawing.Point(203, 185);
+            this.button_paro.Location = new System.Drawing.Point(203, 150);
             this.button_paro.Name = "button_paro";
             this.button_paro.Size = new System.Drawing.Size(133, 40);
             this.button_paro.TabIndex = 5;
@@ -269,7 +270,7 @@
             // button_inicio
             // 
             this.button_inicio.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_inicio.Location = new System.Drawing.Point(203, 107);
+            this.button_inicio.Location = new System.Drawing.Point(203, 91);
             this.button_inicio.Name = "button_inicio";
             this.button_inicio.Size = new System.Drawing.Size(132, 39);
             this.button_inicio.TabIndex = 4;
@@ -291,7 +292,7 @@
             // button_apertura
             // 
             this.button_apertura.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_apertura.Location = new System.Drawing.Point(35, 186);
+            this.button_apertura.Location = new System.Drawing.Point(35, 151);
             this.button_apertura.Name = "button_apertura";
             this.button_apertura.Size = new System.Drawing.Size(140, 40);
             this.button_apertura.TabIndex = 2;
@@ -302,7 +303,7 @@
             // button_apagar
             // 
             this.button_apagar.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_apagar.Location = new System.Drawing.Point(35, 106);
+            this.button_apagar.Location = new System.Drawing.Point(35, 90);
             this.button_apagar.Name = "button_apagar";
             this.button_apagar.Size = new System.Drawing.Size(140, 39);
             this.button_apagar.TabIndex = 1;
@@ -326,9 +327,9 @@
             this.groupBox1.BackColor = System.Drawing.Color.LightSteelBlue;
             this.groupBox1.Controls.Add(this.textBox_Comando);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(963, 21);
+            this.groupBox1.Location = new System.Drawing.Point(960, 37);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(538, 328);
+            this.groupBox1.Size = new System.Drawing.Size(538, 261);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Consola de comandos";
@@ -339,9 +340,9 @@
             this.groupBox2.Controls.Add(this.button_Limpiar);
             this.groupBox2.Controls.Add(this.textBox_Respuesta);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(33, 375);
+            this.groupBox2.Location = new System.Drawing.Point(30, 340);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1468, 381);
+            this.groupBox2.Size = new System.Drawing.Size(1468, 399);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Consola de Respuesta";
@@ -361,32 +362,11 @@
             this.textBox_Respuesta.BackColor = System.Drawing.SystemColors.MenuText;
             this.textBox_Respuesta.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox_Respuesta.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBox_Respuesta.Location = new System.Drawing.Point(12, 56);
+            this.textBox_Respuesta.Location = new System.Drawing.Point(30, 58);
             this.textBox_Respuesta.Multiline = true;
             this.textBox_Respuesta.Name = "textBox_Respuesta";
-            this.textBox_Respuesta.Size = new System.Drawing.Size(1432, 309);
+            this.textBox_Respuesta.Size = new System.Drawing.Size(1408, 320);
             this.textBox_Respuesta.TabIndex = 0;
-            // 
-            // button_dds
-            // 
-            this.button_dds.Location = new System.Drawing.Point(429, 209);
-            this.button_dds.Name = "button_dds";
-            this.button_dds.Size = new System.Drawing.Size(58, 32);
-            this.button_dds.TabIndex = 15;
-            this.button_dds.Text = "....";
-            this.button_dds.UseVisualStyleBackColor = true;
-            this.button_dds.Click += new System.EventHandler(this.button_dds_Click);
-            // 
-            // button1_txt
-            // 
-            this.button1_txt.Location = new System.Drawing.Point(429, 265);
-            this.button1_txt.Name = "button1_txt";
-            this.button1_txt.Size = new System.Drawing.Size(58, 32);
-            this.button1_txt.TabIndex = 16;
-            this.button1_txt.Text = "...";
-            this.button1_txt.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button1_txt.UseVisualStyleBackColor = true;
-            this.button1_txt.Click += new System.EventHandler(this.button1_txt_Click);
             // 
             // openFileDialog_dds
             // 
@@ -395,6 +375,26 @@
             // openFileDialog_txt
             // 
             this.openFileDialog_txt.FileName = "openFileDialog1";
+            // 
+            // label_serial
+            // 
+            this.label_serial.AutoSize = true;
+            this.label_serial.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_serial.Location = new System.Drawing.Point(12, 109);
+            this.label_serial.Name = "label_serial";
+            this.label_serial.Size = new System.Drawing.Size(129, 26);
+            this.label_serial.TabIndex = 9;
+            this.label_serial.Text = "Linea serial:";
+            // 
+            // label_velocidad
+            // 
+            this.label_velocidad.AutoSize = true;
+            this.label_velocidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_velocidad.Location = new System.Drawing.Point(11, 159);
+            this.label_velocidad.Name = "label_velocidad";
+            this.label_velocidad.Size = new System.Drawing.Size(204, 26);
+            this.label_velocidad.TabIndex = 10;
+            this.label_velocidad.Text = "Velocidad (baudios)";
             // 
             // Form1
             // 
@@ -428,8 +428,6 @@
         private System.Windows.Forms.TextBox textBox_Puerto;
         private System.Windows.Forms.TextBox textBox_IP;
         private System.Windows.Forms.GroupBox groupBox_Configuracion_comunicacion;
-        private System.Windows.Forms.Label label_serial;
-        private System.Windows.Forms.Label label_velocidad;
         private System.Windows.Forms.TextBox textBox_Comando;
         private System.Windows.Forms.GroupBox groupBox_Botonesdecontrol;
         private System.Windows.Forms.Button button_Encender;
@@ -452,6 +450,8 @@
         private System.Windows.Forms.Button button_dds;
         private System.Windows.Forms.OpenFileDialog openFileDialog_dds;
         private System.Windows.Forms.OpenFileDialog openFileDialog_txt;
+        private System.Windows.Forms.Label label_velocidad;
+        private System.Windows.Forms.Label label_serial;
     }
 }
 
