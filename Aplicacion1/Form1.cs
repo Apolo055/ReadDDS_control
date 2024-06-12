@@ -63,10 +63,17 @@ namespace Aplicacion1
         private void OnDeleted(object sender, FileSystemEventArgs e)
         {
             //mandamos mensaje de adevertencia utilizando otro hilo para advertir que se ha borrado el documento
-            MessageBox.Show($"El archivo {e.Name} ha sido {e.ChangeType}");
+            //textBox_Comando.Text=($"El archivo {e.Name} ha sido {e.ChangeType}");
         }
 
-     
+       /* private void OnChanged(object source, FileSystemEventArgs e)
+        {
+            // Especifica qué se debe hacer cuando el archivo se cambia
+            this.Invoke((MethodInvoker)delegate {
+                button_leer_Click(this, EventArgs.Empty);
+            });
+        }
+       */
         private void radioButton_SSH_CheckedChanged(object sender, EventArgs e) //evento para seleccionar el tipo de comunicacion
         {
 
@@ -143,21 +150,22 @@ namespace Aplicacion1
                     // Acceder al cuarto valor
                     int N_OBJ = resultado.Item4;
 
-                    string plantilla = @"
+                    string plantilla =
+ @"
 ^0*BEGINLJSCRIPT [(V01.06.00.26)]
 ^0*JLPAR [80 0 0 0 80 0 0 0 00:00 0 7000 0 0 0 0]
 ^0*VISION [ 0 1 1 55000 3 5 3 5 0 ]
 ^0*BEGINJOB [ 0 (|_BEGINJOB_|) ]
 ^0*JOBPAR [ 1000 65535 130000 250 0 0 0 1 0 0 -1 ({B5F013C6-1F3D-53FC-8C1D-E8CC699050E4}) 1 0 0 1 1 0 0 0 0 0 1 0 ]
-^0*OBJ [1 |_OBJ1_| 16 0 (ISO1_7X5)  (|_OBJY_I|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
+^0*OBJ [1 |_OBJ1_| 1 0 (ISO1_7X5)  (|_OBJY_I|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
 ";
 
                     for (int i = 2; i <= N_OBJ; i++)
                     {
-                        plantilla += $"^0*OBJ [{i} |_OBJ{i}_| 16 0 (ISO1_7X5)  (|_OBJX{i-1}_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]\n";
+                        plantilla += $"^0*OBJ [{i} |_OBJ{i}_| 1 0 (ISO1_7X5)  (|_OBJX{i-1}_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]" + "\r\n";
                     }
 
-                    plantilla += $"^0*OBJ [{N_OBJ+1} |_OBJ{N_OBJ + 1}_| 16 0 (ISO1_7X5)  (|_OBJYE_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]\n^0*ENDJOB []\n^0*ENDLJSCRIPT []";
+                    plantilla += $"^0*OBJ [{N_OBJ+1} |_OBJ{N_OBJ + 1}_| 1 0 (ISO1_7X5)  (|_OBJYE_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]" + "\r\n" +"^0*ENDJOB []" + "\r\n"+ "^0*ENDLJSCRIPT []";
 
 
                     Dictionary<string, string> parametros = new Dictionary<string, string>();
@@ -207,7 +215,7 @@ namespace Aplicacion1
 
                     textBox_Comando.Text = plantilla;
 
-                    command = textBox_Comando.Text.Trim();
+                    command = textBox_Comando.Text;
                     await conectar();
                     imprimir();
 
@@ -315,6 +323,7 @@ namespace Aplicacion1
                 watcher. Filter = Path.GetFileName(filePath1); // Observa específicamente este archivo
                 watcher.Deleted += OnDeleted;
                 watcher.Created += OnCreated;
+               // watcher.Changed += OnChanged;
 
                 // Iniciar la observación
                 watcher.EnableRaisingEvents = true;
