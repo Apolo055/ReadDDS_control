@@ -15,6 +15,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices.ComTypes;
 using System.Diagnostics;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Aplicacion1.Utilidades;
 
 
 // El namespace se utiliza para declarar un ámbito que contiene un conjunto de objetos relacionados. Puedes usar un espacio de nombres para organizar los elementos de código y crear tipos únicos globales
@@ -34,6 +35,7 @@ namespace Aplicacion1
         public Form1() // metodo utilizado para inicalizar componentes y estados de los elementos que se utilizan
         {
             InitializeComponent();// inicializacion de la aplicacion
+            Configuracion.cargarConfiguracion();
 
             // habilitar o desabilitar elementos de la aplicacion
             textBox_IP.Enabled = false;
@@ -42,7 +44,6 @@ namespace Aplicacion1
             label_velocidad.Visible = false;
             button_leer.Visible = true;
             label_serial.Visible = false;
-
 
 
 
@@ -88,8 +89,8 @@ namespace Aplicacion1
             textBox_Puerto.Enabled = true;
             textBox_Comando.Enabled = true;
             textBox_Respuesta.Enabled = true;
-            textBox_IP.Text = "172.16.23.97";
-            textBox_Puerto.Text = "3000";
+            textBox_IP.Text = MiConfig.IP;
+            textBox_Puerto.Text = MiConfig.Puerto;
             
 
 
@@ -351,6 +352,19 @@ namespace Aplicacion1
                 //string fileContent = File.ReadAllText(filePath);
             }
 
+        }
+
+        private void textBox_IP_TextChanged(object sender, EventArgs e)
+        {
+            MiConfig.IP = textBox_IP.Text;            
+            Configuracion.GuardarConfiguracion();
+        }
+
+        private void textBox_Puerto_TextChanged(object sender, EventArgs e)
+        {
+
+            MiConfig.Puerto = textBox_Puerto.Text;
+            Configuracion.GuardarConfiguracion();
         }
 
         private async void button_Encender_Click(object sender, EventArgs e)

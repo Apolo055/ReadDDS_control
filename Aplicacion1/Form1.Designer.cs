@@ -115,6 +115,7 @@
             this.textBox_Puerto.Name = "textBox_Puerto";
             this.textBox_Puerto.Size = new System.Drawing.Size(249, 30);
             this.textBox_Puerto.TabIndex = 7;
+            this.textBox_Puerto.TextChanged += new System.EventHandler(this.textBox_Puerto_TextChanged);
             // 
             // textBox_IP
             // 
@@ -123,6 +124,7 @@
             this.textBox_IP.Name = "textBox_IP";
             this.textBox_IP.Size = new System.Drawing.Size(249, 30);
             this.textBox_IP.TabIndex = 8;
+            this.textBox_IP.TextChanged += new System.EventHandler(this.textBox_IP_TextChanged);
             // 
             // groupBox_Configuracion_comunicacion
             // 
