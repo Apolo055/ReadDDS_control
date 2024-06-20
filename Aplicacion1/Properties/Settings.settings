@@ -5,11 +5,26 @@
     <Setting Name="IP" Type="System.String" Scope="User">
       <Value Profile="(Default)">172.16.23.97</Value>
     </Setting>
-    <Setting Name="telefono" Type="System.String" Scope="User">
-      <Value Profile="(Default)">5527441122</Value>
+    <Setting Name="Ruta" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\manue\OneDrive\Escritorio\programas_impresora\article.dds</Value>
     </Setting>
     <Setting Name="Puerto" Type="System.String" Scope="User">
       <Value Profile="(Default)">3000</Value>
+    </Setting>
+    <Setting Name="Nombre_archivo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">archivo</Value>
+    </Setting>
+    <Setting Name="Matriz" Type="System.String" Scope="User">
+      <Value Profile="(Default)">5x5</Value>
+    </Setting>
+    <Setting Name="Altura" Type="System.String" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="Modo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="Ancho" Type="System.String" Scope="User">
+      <Value Profile="(Default)">4</Value>
     </Setting>
   </Settings>
 </SettingsFile>

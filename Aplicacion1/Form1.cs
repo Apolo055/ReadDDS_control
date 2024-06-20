@@ -28,7 +28,6 @@ namespace Aplicacion1
         string command = "", response = ""; // variable para almacenar la respuesta y mensaje que se envia entre el usuario y la maquina
         string filePath2;
         string acum=" ";
-        string filePath1;
         string Encender = "^0!PO", Apagar = "^0!PF", Apertura = "^0!NO", Cierre = "^0!NC", Inicio = "^0!GO", Paro = "^0!ST", Descarga = "^0?JB";
         // valiables que almacenan comando especificos para mandar a la maquina atraves de botones de control
         string ruta =" ";
@@ -44,8 +43,13 @@ namespace Aplicacion1
             label_velocidad.Visible = false;
             button_leer.Visible = true;
             label_serial.Visible = false;
-
-
+            textBox_ruta_de_carpeta.Text = MiConfig.Nombre_archivo;
+            textBox_IP.Text = MiConfig.IP;
+            textBox_Puerto.Text = MiConfig.Puerto;
+            textBox_matriz.Text = MiConfig.Matriz;
+            textBox_altura.Text = MiConfig.Altura;
+            textBox_modoPG.Text = MiConfig.Modo;
+            textBox_ANCHOFUENTE.Text = MiConfig.Ancho;
 
 
 
@@ -89,9 +93,8 @@ namespace Aplicacion1
             textBox_Puerto.Enabled = true;
             textBox_Comando.Enabled = true;
             textBox_Respuesta.Enabled = true;
-            textBox_IP.Text = MiConfig.IP;
-            textBox_Puerto.Text = MiConfig.Puerto;
             
+
 
 
             serial = false;
@@ -102,9 +105,9 @@ namespace Aplicacion1
         {
             try
             {
-                if (File.Exists(filePath1))
+                if (File.Exists(MiConfig.Ruta))
                 {
-                    string contenidoArchivo1 = File.ReadAllText(filePath1);
+                    string contenidoArchivo1 = File.ReadAllText(MiConfig.Ruta);
 
                     Dictionary<string, string[]> valoresEncontrados1 = new Dictionary<string, string[]>();
                     foreach (string linea in contenidoArchivo1.Split('\n'))
@@ -152,21 +155,23 @@ namespace Aplicacion1
                     int N_OBJ = resultado.Item4;
 
                     string plantilla =
- @"
-^0*BEGINLJSCRIPT [(V01.06.00.26)]
-^0*JLPAR [80 0 0 0 80 0 0 0 00:00 0 7000 0 0 0 0]
-^0*VISION [ 0 1 1 55000 3 5 3 5 0 ]
+@"
+^0*BEGINLJSCRIPT [(V01.06.00.33)]
+^0*JLPAR [5 0 0 1 1500 180 0 12500 00:00 1 7000 0 0 1000 0 0]
+^0*VISION [ 0 1 0 55000 3 5 3 5 0 ]
 ^0*BEGINJOB [ 0 (|_BEGINJOB_|) ]
-^0*JOBPAR [ 1000 65535 130000 250 0 0 0 1 0 0 -1 ({B5F013C6-1F3D-53FC-8C1D-E8CC699050E4}) 1 0 0 1 1 0 0 0 0 0 1 0 ]
-^0*OBJ [1 |_OBJ1_| 1 0 (ISO1_7X5)  (|_OBJY_I|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
+^0*JOBPAR [ 40000 65535 0 300 7 400 0 0 0 0 -1 ({4D61F4F4-2436-C057-E236-80DF07201055}) 1 1 55000 0 2817 0 0 0 0 0 1 0 0 ]
+^0*OBJ [1 |_OBJ1_| 1 0 (" + textBox_matriz.Text + @")  (|_OBJY_I|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
 ";
+                    N_OBJ = N_OBJ + 1;
 
                     for (int i = 2; i <= N_OBJ; i++)
                     {
-                        plantilla += $"^0*OBJ [{i} |_OBJ{i}_| 1 0 (ISO1_7X5)  (|_OBJX{i-1}_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]" + "\r\n";
+                        //plantilla += $"^0*OBJ [{i} |_OBJ{i}_| 1 0 ("+ textBox_matriz.Text + ")  (|_OBJX{i-1}) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]" + "\r\n";
+                        plantilla += "^0*OBJ [" + i + " |_OBJ" + i + "_| 1 0 (" + textBox_matriz.Text + ")  (|_OBJX" + (i - 1) + "_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]\r\n";
                     }
 
-                    plantilla += $"^0*OBJ [{N_OBJ+1} |_OBJ{N_OBJ + 1}_| 1 0 (ISO1_7X5)  (|_OBJYE_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]" + "\r\n" +"^0*ENDJOB []" + "\r\n"+ "^0*ENDLJSCRIPT []";
+                    plantilla += $"^0*OBJ [{N_OBJ+1} |_OBJ{N_OBJ + 1}_| 1 0 (" + textBox_matriz.Text + @")  (|_OBJYE_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]" + "\r\n" +"^0*ENDJOB []" + "\r\n"+ "^0*ENDLJSCRIPT []";
 
 
                     Dictionary<string, string> parametros = new Dictionary<string, string>();
@@ -179,14 +184,14 @@ namespace Aplicacion1
 
                         if (i == 1)
                         {
-                            parametros.Add($"|_OBJ{i}_|", mark1);
+                            parametros.Add($"|_OBJ{i}_|", Dist_I.ToString());
                             parametros.Add($"|_OBJY_I|", valoresEncontrados1["MarkingTextBegin"][1]);
                             parametros.Add($"|_OBJX1_|", valoresEncontrados1["MarkingTextEndless"][1]);
                             acumulador = resultado.Item1;
                         }
                         else if (i == N_OBJ)
                         {
-                            acumulador += (60 + resultado.Item6); acum = acumulador.ToString();
+                            acumulador += resultado.Item3; acum = acumulador.ToString();
                             parametros.Add($"|_OBJ{i}_|", acum);
                             parametros.Add($"|_OBJYE_|", valoresEncontrados1["MarkingTextEnd"][1]);
                             if (i == N_OBJ)
@@ -199,9 +204,9 @@ namespace Aplicacion1
                         }
                         else
                         {
-                            if (i == 2) { acumulador += resultado.Item6; acum = acumulador.ToString(); }
-                            if (i == 3) { acumulador += (60 + resultado.Item6); acum = acumulador.ToString(); }
-                            if (i >3 && i< N_OBJ) { acumulador += (60 + resultado.Item6); acum = acumulador.ToString(); }
+                            if (i == 2) { acumulador += resultado.Item3; acum = acumulador.ToString(); }
+                            if (i == 3) { acumulador += resultado.Item3; acum = acumulador.ToString(); }
+                            if (i >3 && i< N_OBJ) { acumulador += resultado.Item3; acum = acumulador.ToString(); }
                             parametros.Add($"|_OBJ{i}_|", acum);
                             parametros.Add($"|_OBJX{i}_|", valoresEncontrados1["MarkingTextEndless"][1]);
                         }
@@ -229,7 +234,7 @@ namespace Aplicacion1
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Ocurrió un error al leer el archivo: " + ex.Message);
+                MessageBox.Show("Ocurrió un error al leer el archivo verifique el archivo seleccionado: " + ex.Message);
                 Console.WriteLine("El error ocurrió en la línea: " + new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber());
             }
         }
@@ -238,12 +243,17 @@ namespace Aplicacion1
         {
             if (int.TryParse(X, out int dtX) && int.TryParse(Y, out int dtY) && int.TryParse(Z, out int dtZ) && int.TryParse(W, out int dtW))
             {
-                int Dist_I = dtY + 60;
-                int Dist_F = dtW + 60;
-                int Dist_M = dtZ + 60;
-                int Distancia_disponible = dtX - ((Dist_I) + (Dist_F));
+                int conversionY = (5 * dtY) / 1;
+                int conversionW = (5 * dtW) / 1;
+                int conversionZ = (5 * dtZ) / 1;
+                int conversionx = (5 * dtX) / 1;
+                int Dist_I = conversionY + 60;
+                int Dist_F = conversionW + 60;
+                int Dist_M = conversionZ + 60;
+                int Distancia_disponible = conversionx - ((Dist_I) + (Dist_F));
                 int N_OBJ = Distancia_disponible / Dist_M;
-                int acumf = dtX - Dist_F;
+                int acumf = conversionx - Dist_F;
+        
 
                 // Retorna los cuatro valores como una tupla
                 return (Dist_I, Dist_F, Dist_M, N_OBJ,dtY,dtZ,dtW,acumf);
@@ -311,17 +321,18 @@ namespace Aplicacion1
         {
             if (openFileDialog_dds.ShowDialog() == DialogResult.OK)
             {
+
                 // Obtener la ruta del archivo seleccionado
-                 filePath1 = openFileDialog_dds.FileName;
-
+                MiConfig.Ruta = openFileDialog_dds.FileName;
+                MiConfig.Nombre_archivo = Path.GetFileName(MiConfig.Ruta);
                 // Obtener el nombre del archivo
-                string fileName = Path.GetFileName(filePath1);
-
-
-                textBox_ruta_de_carpeta.Text = fileName;
+                Configuracion.GuardarConfiguracion();
+                
+               
+                textBox_ruta_de_carpeta.Text = MiConfig.Nombre_archivo;
                 FileSystemWatcher watcher = new FileSystemWatcher();
-                watcher.Path = Path.GetDirectoryName(filePath1); // Observa el directorio del archivo
-                watcher. Filter = Path.GetFileName(filePath1); // Observa específicamente este archivo
+                watcher.Path = Path.GetDirectoryName(MiConfig.Ruta); // Observa el directorio del archivo
+                watcher. Filter = Path.GetFileName(MiConfig.Ruta); // Observa específicamente este archivo
                 watcher.Deleted += OnDeleted;
                 watcher.Created += OnCreated;
                // watcher.Changed += OnChanged;
@@ -365,6 +376,34 @@ namespace Aplicacion1
 
             MiConfig.Puerto = textBox_Puerto.Text;
             Configuracion.GuardarConfiguracion();
+        }
+
+        private void textBox_matriz_TextChanged(object sender, EventArgs e)
+        {
+            MiConfig.Matriz = textBox_matriz.Text;
+            Configuracion.GuardarConfiguracion();
+
+        }
+
+        private void textBox_altura_TextChanged(object sender, EventArgs e)
+        {
+            MiConfig.Altura = textBox_altura.Text;
+            Configuracion.GuardarConfiguracion();
+
+        }
+
+        private void textBox_modoPG_TextChanged(object sender, EventArgs e)
+        {
+            MiConfig.Modo = textBox_modoPG.Text;
+            Configuracion.GuardarConfiguracion();
+
+        }
+
+        private void textBox_ANCHOFUENTE_TextChanged(object sender, EventArgs e)
+        {
+            MiConfig.Ancho = textBox_ANCHOFUENTE.Text;
+            Configuracion.GuardarConfiguracion();
+
         }
 
         private async void button_Encender_Click(object sender, EventArgs e)
