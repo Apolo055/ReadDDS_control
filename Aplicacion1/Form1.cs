@@ -27,7 +27,8 @@ namespace Aplicacion1
         bool serial = false, SSH = false; // variables utilizadas para funcionamiento de la aplicacion
         string command = "", response = ""; // variable para almacenar la respuesta y mensaje que se envia entre el usuario y la maquina
         string filePath2;
-        string acum=" ";
+        double Tamcaracter = 10.0;
+        string acum =" ";
         string Encender = "^0!PO", Apagar = "^0!PF", Apertura = "^0!NO", Cierre = "^0!NC", Inicio = "^0!GO", Paro = "^0!ST", Descarga = "^0?JB";
         // valiables que almacenan comando especificos para mandar a la maquina atraves de botones de control
         string ruta =" ";
@@ -135,6 +136,7 @@ namespace Aplicacion1
                         }
                     }
 
+
                     string Distancia_Total = valoresEncontrados1["WireLength"][0];
                     string mark1 = valoresEncontrados1["MarkingTextBegin"][0];
                     string mark2 = valoresEncontrados1["MarkingTextEndless"][0];
@@ -142,76 +144,37 @@ namespace Aplicacion1
 
                     var resultado = Operacion(Distancia_Total,mark1,mark2,mark3);
 
-                    // Acceder al primer valor
-                    int Dist_I = resultado.Item1;
-
-                    // Acceder al segundo valor
-                    int Dist_F = resultado.Item2;
-
-                    // Acceder al tercer valor
-                    int Dist_M = resultado.Item3;
-
-                    // Acceder al cuarto valor
-                    int N_OBJ = resultado.Item4;
-
+                  
                     string plantilla =
+
 @"
-^0*BEGINLJSCRIPT [(V01.06.00.33)]
-^0*JLPAR [5 0 0 1 1500 180 0 12500 00:00 1 7000 0 0 1000 0 0]
-^0*VISION [ 0 1 0 55000 3 5 3 5 0 ]
-^0*BEGINJOB [ 0 (|_BEGINJOB_|) ]
-^0*JOBPAR [ 40000 65535 0 300 7 400 0 0 0 0 -1 ({4D61F4F4-2436-C057-E236-80DF07201055}) 1 1 55000 0 2817 0 0 0 0 0 1 0 0 ]
-^0*OBJ [1 |_OBJ1_| 1 0 (" + textBox_matriz.Text + @")  (|_OBJY_I|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]
+^0*BEGINLJSCRIPT[(V01.06.00.31)]
+^0*JLPAR[" + textBox_altura.Text + @" 1 0 3 30 0 0 9900 00:00 0 7000 0 0 1000 0 0]
+^0*VISION[0 1 0 55000 3 5 3 5 0]
+^0*MOBAPARAMETERUSAGE[0]
+^0*BEGINJOB[0 (|_BEGINJOB_1| 1)]
+^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text +" "+ @"" + textBox_modoPG.Text + " " + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
+^0*OBJ[1 1 0 0 (" + textBox_matriz.Text + @") (|_OBJ_1|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+^0*ENDJOB[]
+^0*BEGINJOB[1( |_BEGINJOB_2| 2)]
+^0*JOBPAR[0 |_JOBPAR_R| |_JOBPAR_2| " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
+^0*OBJ[1 0 0 0 (" +textBox_matriz.Text + @") (|_OBJ_2|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+^0*ENDJOB[]
+^0*JOBORG[1 " + resultado.Item3.ToString() + @" 0]
+^0*JOBORG[2 " + resultado.Item4.ToString() + @" 1]
+^0*ENDLJSCRIPT[]
 ";
-                    N_OBJ = N_OBJ + 1;
 
-                    for (int i = 2; i <= N_OBJ; i++)
-                    {
-                        //plantilla += $"^0*OBJ [{i} |_OBJ{i}_| 1 0 ("+ textBox_matriz.Text + ")  (|_OBJX{i-1}) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]" + "\r\n";
-                        plantilla += "^0*OBJ [" + i + " |_OBJ" + i + "_| 1 0 (" + textBox_matriz.Text + ")  (|_OBJX" + (i - 1) + "_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]\r\n";
-                    }
 
-                    plantilla += $"^0*OBJ [{N_OBJ+1} |_OBJ{N_OBJ + 1}_| 1 0 (" + textBox_matriz.Text + @")  (|_OBJYE_|) 1 0 0 0 0 0 0 0 0 0 0 0 ()  () 0 0 () ]" + "\r\n" +"^0*ENDJOB []" + "\r\n"+ "^0*ENDLJSCRIPT []";
 
 
                     Dictionary<string, string> parametros = new Dictionary<string, string>();
-                    parametros.Add("|_BEGINJOB_|", valoresEncontrados1["Name"][0]);
-                    int acumulador = 0;
-
-                    for (int i = 1; i <= N_OBJ; i++)
-                    {
-
-
-                        if (i == 1)
-                        {
-                            parametros.Add($"|_OBJ{i}_|", Dist_I.ToString());
-                            parametros.Add($"|_OBJY_I|", valoresEncontrados1["MarkingTextBegin"][1]);
-                            parametros.Add($"|_OBJX1_|", valoresEncontrados1["MarkingTextEndless"][1]);
-                            acumulador = resultado.Item1;
-                        }
-                        else if (i == N_OBJ)
-                        {
-                            acumulador += resultado.Item3; acum = acumulador.ToString();
-                            parametros.Add($"|_OBJ{i}_|", acum);
-                            parametros.Add($"|_OBJYE_|", valoresEncontrados1["MarkingTextEnd"][1]);
-                            if (i == N_OBJ)
-                            {
-                                acumulador = 0;
-                                acumulador =  resultado.Item8; acum = acumulador.ToString();
-                                parametros.Add($"|_OBJ{i+1}_|", acum);
-                            }
-
-                        }
-                        else
-                        {
-                            if (i == 2) { acumulador += resultado.Item3; acum = acumulador.ToString(); }
-                            if (i == 3) { acumulador += resultado.Item3; acum = acumulador.ToString(); }
-                            if (i >3 && i< N_OBJ) { acumulador += resultado.Item3; acum = acumulador.ToString(); }
-                            parametros.Add($"|_OBJ{i}_|", acum);
-                            parametros.Add($"|_OBJX{i}_|", valoresEncontrados1["MarkingTextEndless"][1]);
-                        }
-                    }
-
+                    parametros.Add("|_BEGINJOB_1|", valoresEncontrados1["Name"][0]);
+                    parametros.Add("|_BEGINJOB_2|", valoresEncontrados1["Name"][0]);
+                    parametros.Add("|_JOBPAR_2|", resultado.Item2.ToString());
+                    parametros.Add("|_JOBPAR_R|", (resultado.Item1-1).ToString());
+                    parametros.Add("|_OBJ_1|", valoresEncontrados1["MarkingTextBegin"][1]);
+                    parametros.Add("|_OBJ_2|", valoresEncontrados1["MarkingTextEndless"][1]);
 
 
                     foreach (KeyValuePair<string, string> item in parametros)
@@ -239,29 +202,32 @@ namespace Aplicacion1
             }
         }
 
-        private (int, int, int, int,int,int,int,int) Operacion(string X, string Y, string Z, string W)
+        private (int, int, int, int) Operacion(string X, string Y, string Z, string W)
         {
             if (int.TryParse(X, out int dtX) && int.TryParse(Y, out int dtY) && int.TryParse(Z, out int dtZ) && int.TryParse(W, out int dtW))
             {
-                int conversionY = (5 * dtY) / 1;
-                int conversionW = (5 * dtW) / 1;
-                int conversionZ = (5 * dtZ) / 1;
-                int conversionx = (5 * dtX) / 1;
-                int Dist_I = conversionY + 60;
-                int Dist_F = conversionW + 60;
-                int Dist_M = conversionZ + 60;
-                int Distancia_disponible = conversionx - ((Dist_I) + (Dist_F));
-                int N_OBJ = Distancia_disponible / Dist_M;
-                int acumf = conversionx - Dist_F;
-        
+                
+                int Dist_I = dtY* 1000;
+                int Dist_F = dtW * 1000;
+                int Dist_T = dtX * 1000;
+                int Constantetext = Convert.ToInt32(Tamcaracter * 1000);
+                int Dist_M = (dtZ*1000)+ Constantetext;
+                double Distancia_disponible = Dist_T - (Constantetext + Dist_I + Constantetext + Dist_F);
+                double N_OBJ = Distancia_disponible / Dist_M;
+                int resultadoRedondeado = Convert.ToInt32(Math.Floor(N_OBJ));
+                double parteDecimal = Convert.ToInt32((N_OBJ - resultadoRedondeado) *10* 1000) + (2 * 1000);
+                int residuo = Convert.ToInt32(parteDecimal);
+                int Dist_job1 = Convert.ToInt32(Dist_I - (8 * 1000));
+                int Dist_job2 = Dist_T-( (Constantetext) + (Dist_M * (resultadoRedondeado - 1)) + (residuo)+ Dist_F);
+
 
                 // Retorna los cuatro valores como una tupla
-                return (Dist_I, Dist_F, Dist_M, N_OBJ,dtY,dtZ,dtW,acumf);
+                return (resultadoRedondeado, Dist_M, Dist_job1, Dist_job2);
             }
             else
             {
                 Console.WriteLine("No se pudo convertir uno o más valores a un entero.");
-                return (0, 0, 0, 0,0,0,0,0); // Retorna una tupla de ceros si hay un error
+                return (0, 0, 0, 0); // Retorna una tupla de ceros si hay un error
             }
         }
 
