@@ -27,7 +27,7 @@ namespace Aplicacion1
         bool serial = false, SSH = false; // variables utilizadas para funcionamiento de la aplicacion
         string command = "", response = ""; // variable para almacenar la respuesta y mensaje que se envia entre el usuario y la maquina
         string filePath2;
-        double Tamcaracter = 10.0;
+        double Tamcaracter = 0.0;
         string acum =" ";
         string Encender = "^0!PO", Apagar = "^0!PF", Apertura = "^0!NO", Cierre = "^0!NC", Inicio = "^0!GO", Paro = "^0!ST", Descarga = "^0?JB";
         // valiables que almacenan comando especificos para mandar a la maquina atraves de botones de control
@@ -142,6 +142,20 @@ namespace Aplicacion1
                     string mark2 = valoresEncontrados1["MarkingTextEndless"][0];
                     string mark3 = valoresEncontrados1["MarkingTextEnd"][0];
 
+                    int longitud = valoresEncontrados1["MarkingTextBegin"][1].Length;
+                    int anchoFuente = 0;
+                    bool isParsed = int.TryParse(textBox_ANCHOFUENTE.Text, out anchoFuente);
+
+                    if (isParsed)
+                    {
+                        MessageBox.Show("El valor en textBox_ANCHOFUENTE no es un número entero válido." +longitud.ToString() +"   "+anchoFuente.ToString());
+                        Tamcaracter = longitud * ((anchoFuente / 10.0) * 5.0);
+                    }
+                    else
+                    {
+                        MessageBox.Show("El valor en textBox_ANCHOFUENTE no es un número entero válido.");
+                    }
+                    
                     var resultado = Operacion(Distancia_Total,mark1,mark2,mark3);
 
                   
