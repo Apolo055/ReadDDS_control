@@ -148,8 +148,19 @@ namespace Aplicacion1
 
                     if (isParsed)
                     {
-                        MessageBox.Show("El valor en textBox_ANCHOFUENTE no es un número entero válido." +longitud.ToString() +"   "+anchoFuente.ToString());
-                        Tamcaracter = longitud * ((anchoFuente / 10.0) * 5.0);
+                        string texto = textBox_matriz.Text; // Obtén el texto del TextBox
+                        string[] partes = texto.Split('X'); // Divide el texto por 'X'
+                        double numero;
+                        if (Double.TryParse(partes[1], out numero)) // Intenta convertir la segunda parte a double
+                        {
+                            //Console.WriteLine(numero.ToString());
+                            Tamcaracter = longitud * ((anchoFuente * 0.001) * (numero + 1.0));// Aquí puedes usar la variable 'numero'
+                        }
+                        else
+                        {
+                            MessageBox.Show("El valor en textBox_Matriz no es esta en un formato válido."); // Maneja el caso en que la conversión a double falla
+                        }
+                    
                     }
                     else
                     {
@@ -229,11 +240,23 @@ namespace Aplicacion1
                 double Distancia_disponible = Dist_T - (Constantetext + Dist_I + Constantetext + Dist_F);
                 double N_OBJ = Distancia_disponible / Dist_M;
                 int resultadoRedondeado = Convert.ToInt32(Math.Floor(N_OBJ));
-                double parteDecimal = Convert.ToInt32((N_OBJ - resultadoRedondeado) *10* 1000) + (2 * 1000);
+                double parteDecimal =(N_OBJ - resultadoRedondeado)  * Dist_M;
                 int residuo = Convert.ToInt32(parteDecimal);
                 int Dist_job1 = Convert.ToInt32(Dist_I - (8 * 1000));
-                int Dist_job2 = Dist_T-( (Constantetext) + (Dist_M * (resultadoRedondeado - 1)) + (residuo)+ Dist_F);
+                int Dist_job2 = 0;
+                if (resultadoRedondeado - 1 == 0)
+                {
+                    Dist_job2 = Dist_T - (Constantetext + Dist_F+8000);
+                }
+                else 
+                {
+                    Dist_job2 = Dist_T - ((Constantetext) + (Dist_M * (resultadoRedondeado - 1)) + Dist_F+8000);
+                }
+                    
 
+               // Console.WriteLine(residuo.ToString());
+               // Console.WriteLine(N_OBJ.ToString());
+                
 
                 // Retorna los cuatro valores como una tupla
                 return (resultadoRedondeado, Dist_M, Dist_job1, Dist_job2);
