@@ -67,6 +67,9 @@ namespace Aplicacion1
             {
                 string fileContent = File.ReadAllText(e.FullPath);
                 MessageBox.Show($"Archivo creado: {e.Name}\nContenido:\n{fileContent}");
+                string plantilla = procesar(fileContent);
+
+                Invoke(new Action(() => textBox_Comando.Text = plantilla));
             }
             catch (Exception ex)
             {
@@ -121,67 +124,96 @@ namespace Aplicacion1
                 {
                     string contenidoArchivo1 = File.ReadAllText(MiConfig.Ruta);
 
-                    Dictionary<string, string[]> valoresEncontrados1 = new Dictionary<string, string[]>();
-                    foreach (string linea in contenidoArchivo1.Split('\n'))
+                    string plantilla = this.procesar(contenidoArchivo1);
+
+                    textBox_Comando.Text = plantilla;
+
+                    command = plantilla;
+                    await conectar();
+                    imprimir();
+
+                    textBox_Comando.Text = "El mensaje modificado ha sido enviado";
+                }
+                else
+                {
+                    textBox_Comando.Text = "El archivo1 no existe.";
+                }
+
+
+            }
+
+           
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocurrió un error al leer el archivo verifique el archivo seleccionado: " + ex.Message);
+                Console.WriteLine("El error ocurrió en la línea: " + new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber());
+            }
+        }
+
+        public string procesar(string contenidoArchivo1)
+        {
+            Dictionary<string, string[]> valoresEncontrados1 = new Dictionary<string, string[]>();
+            foreach (string linea in contenidoArchivo1.Split('\n'))
+            {
+                string[] partes = linea.Split('=');
+                if (partes.Length > 1)
+                {
+                    string clave = partes[0].Trim();
+                    string valor = partes[1].Trim();
+                    if (clave == "MarkingTextBegin" || clave == "MarkingTextEndless" || clave == "MarkingTextEnd")
                     {
-                        string[] partes = linea.Split('=');
-                        if (partes.Length > 1)
+                        if (valor.Contains(","))
                         {
-                            string clave = partes[0].Trim();
-                            string valor = partes[1].Trim();
-                            if (clave == "MarkingTextBegin" || clave == "MarkingTextEndless" || clave == "MarkingTextEnd")
-                            {
-                                if (valor.Contains(","))
-                                {
-                                    string[] valores = valor.Split(',');
-                                    valores[0] = valores[0].Trim('"');
-                                    valores[1] = valores[1].Trim('"');
-                                    valoresEncontrados1[clave] = valores;
-                                }
-                            }
-                            else if (clave == "Name" || clave == "WireLength")
-                            {
-                                valor = valor.Trim('"');
-                                valoresEncontrados1[clave] = new string[] { valor };
-                            }
+                            string[] valores = valor.Split(',');
+                            valores[0] = valores[0].Trim('"');
+                            valores[1] = valores[1].Trim('"');
+                            valoresEncontrados1[clave] = valores;
                         }
                     }
-
-
-                    string Distancia_Total = valoresEncontrados1["WireLength"][0];
-                    string mark1 = valoresEncontrados1["MarkingTextBegin"][0];
-                    string mark2 = valoresEncontrados1["MarkingTextEndless"][0];
-                    string mark3 = valoresEncontrados1["MarkingTextEnd"][0];
-
-                    int longitud = valoresEncontrados1["MarkingTextBegin"][1].Length;
-                    int anchoFuente = 0;
-                    bool isParsed = int.TryParse(textBox_ANCHOFUENTE.Text, out anchoFuente);
-
-                    if (isParsed)
+                    else if (clave == "Name" || clave == "WireLength")
                     {
-                        string texto = textBox_matriz.Text; // Obtén el texto del TextBox
-                        string[] partes = texto.Split('x'); // Divide el texto por 'X'
-                        double numero;
-                        if (Double.TryParse(partes[1], out numero)) // Intenta convertir la segunda parte a double
-                        {
-                            //Console.WriteLine(numero.ToString());
-                            Tamcaracter = longitud * ((anchoFuente * 0.001) * (numero + 1.0));// Aquí puedes usar la variable 'numero'
-                        }
-                        else
-                        {
-                            MessageBox.Show("El valor en textBox_Matriz no es esta en un formato válido."); // Maneja el caso en que la conversión a double falla
-                        }
-
+                        valor = valor.Trim('"');
+                        valoresEncontrados1[clave] = new string[] { valor };
                     }
-                    else
-                    {
-                        MessageBox.Show("El valor en textBox_ANCHOFUENTE no es un número entero válido.");
-                    }
-
-                    var resultado = Operacion(Distancia_Total, mark1, mark2, mark3);
+                }
+            }
 
 
-                    string plantilla =
+            string Distancia_Total = valoresEncontrados1["WireLength"][0];
+            string mark1 = valoresEncontrados1["MarkingTextBegin"][0];
+            string mark2 = valoresEncontrados1["MarkingTextEndless"][0];
+            string mark3 = valoresEncontrados1["MarkingTextEnd"][0];
+
+            int longitud = valoresEncontrados1["MarkingTextBegin"][1].Length;
+            int anchoFuente = 0;
+            bool isParsed = int.TryParse(textBox_ANCHOFUENTE.Text, out anchoFuente);
+
+            if (isParsed)
+            {
+                string texto = textBox_matriz.Text; // Obtén el texto del TextBox
+                string[] partes = texto.Split('x'); // Divide el texto por 'X'
+                double numero;
+                if (Double.TryParse(partes[1], out numero)) // Intenta convertir la segunda parte a double
+                {
+                    //Console.WriteLine(numero.ToString());
+                    Tamcaracter = longitud * ((anchoFuente * 0.001) * (numero + 1.0));// Aquí puedes usar la variable 'numero'
+                }
+                else
+                {
+                    MessageBox.Show("El valor en textBox_Matriz no es esta en un formato válido."); // Maneja el caso en que la conversión a double falla
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("El valor en textBox_ANCHOFUENTE no es un número entero válido.");
+            }
+
+            var resultado = Operacion(Distancia_Total, mark1, mark2, mark3);
+
+
+            string plantilla =
 
 @"
 ^0*BEGINLJSCRIPT[(V01.06.00.31)]
@@ -204,44 +236,22 @@ namespace Aplicacion1
 
 
 
-                    Dictionary<string, string> parametros = new Dictionary<string, string>();
-                    parametros.Add("|_BEGINJOB_1|", valoresEncontrados1["Name"][0]);
-                    parametros.Add("|_BEGINJOB_2|", valoresEncontrados1["Name"][0]);
-                    parametros.Add("|_JOBPAR_2|", resultado.Item2.ToString());
-                    parametros.Add("|_JOBPAR_R|", (resultado.Item1 - 1).ToString());
-                    parametros.Add("|_OBJ_1|", valoresEncontrados1["MarkingTextBegin"][1]);
-                    parametros.Add("|_OBJ_2|", valoresEncontrados1["MarkingTextEndless"][1]);
+            Dictionary<string, string> parametros = new Dictionary<string, string>();
+            parametros.Add("|_BEGINJOB_1|", valoresEncontrados1["Name"][0]);
+            parametros.Add("|_BEGINJOB_2|", valoresEncontrados1["Name"][0]);
+            parametros.Add("|_JOBPAR_2|", resultado.Item2.ToString());
+            parametros.Add("|_JOBPAR_R|", (resultado.Item1 - 1).ToString());
+            parametros.Add("|_OBJ_1|", valoresEncontrados1["MarkingTextBegin"][1]);
+            parametros.Add("|_OBJ_2|", valoresEncontrados1["MarkingTextEndless"][1]);
 
 
-                    foreach (KeyValuePair<string, string> item in parametros)
-                    {
-                        plantilla = plantilla.Replace(item.Key, item.Value);
-                    }
-
-                    textBox_Comando.Text = plantilla;
-
-                    command = textBox_Comando.Text;
-                    await conectar();
-                    imprimir();
-
-                    textBox_Comando.Text = "El mensaje modificado ha sido enviado";
-                    //File.Delete(MiConfig.Ruta);
-                }
-                else
-                {
-                    textBox_Comando.Text = "El archivo1 no existe.";
-                }
-
-
-            }
-
-           
-
-            catch (Exception ex)
+            foreach (KeyValuePair<string, string> item in parametros)
             {
-                MessageBox.Show("Ocurrió un error al leer el archivo verifique el archivo seleccionado: " + ex.Message);
-                Console.WriteLine("El error ocurrió en la línea: " + new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber());
+                plantilla = plantilla.Replace(item.Key, item.Value);
             }
+
+            return plantilla;
+            //File.Delete(MiConfig.Ruta);
         }
 
         private (int, int, int, int) Operacion(string X, string Y, string Z, string W)
