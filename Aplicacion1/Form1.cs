@@ -58,11 +58,22 @@ namespace Aplicacion1
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
-          /////  MessageBox.Show($"Archivo agregado: {e.FullPath}");
-             // invocamos el evento click desde el hilo de la UI O hilo principal
-            this.Invoke((MethodInvoker)delegate {
-                button_leer_Click(this, EventArgs.Empty);
-            });
+            /////  MessageBox.Show($"Archivo agregado: {e.FullPath}");
+            // invocamos el evento click desde el hilo de la UI O hilo principal
+            // Esperar a que el archivo esté completamente escrito antes de intentar leerlo
+            System.Threading.Thread.Sleep(1000);
+
+            try
+            {
+                string fileContent = File.ReadAllText(e.FullPath);
+                MessageBox.Show($"Archivo creado: {e.Name}\nContenido:\n{fileContent}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al leer el archivo: {ex.Message}");
+            }
+           // button_leer_Click(this, EventArgs.Empty);
+            
 
         }
 
@@ -214,7 +225,7 @@ namespace Aplicacion1
                     imprimir();
 
                     textBox_Comando.Text = "El mensaje modificado ha sido enviado";
-                    File.Delete(MiConfig.Ruta);
+                    //File.Delete(MiConfig.Ruta);
                 }
                 else
                 {
