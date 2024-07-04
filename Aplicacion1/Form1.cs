@@ -149,7 +149,7 @@ namespace Aplicacion1
                     if (isParsed)
                     {
                         string texto = textBox_matriz.Text; // Obtén el texto del TextBox
-                        string[] partes = texto.Split('X'); // Divide el texto por 'X'
+                        string[] partes = texto.Split('x'); // Divide el texto por 'X'
                         double numero;
                         if (Double.TryParse(partes[1], out numero)) // Intenta convertir la segunda parte a double
                         {
@@ -160,16 +160,16 @@ namespace Aplicacion1
                         {
                             MessageBox.Show("El valor en textBox_Matriz no es esta en un formato válido."); // Maneja el caso en que la conversión a double falla
                         }
-                    
+
                     }
                     else
                     {
                         MessageBox.Show("El valor en textBox_ANCHOFUENTE no es un número entero válido.");
                     }
-                    
-                    var resultado = Operacion(Distancia_Total,mark1,mark2,mark3);
 
-                  
+                    var resultado = Operacion(Distancia_Total, mark1, mark2, mark3);
+
+
                     string plantilla =
 
 @"
@@ -178,12 +178,12 @@ namespace Aplicacion1
 ^0*VISION[0 1 0 55000 3 5 3 5 0]
 ^0*MOBAPARAMETERUSAGE[0]
 ^0*BEGINJOB[0 (|_BEGINJOB_1| 1)]
-^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text +" "+ @"" + textBox_modoPG.Text + " " + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
+^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
 ^0*OBJ[1 1 0 0 (" + textBox_matriz.Text + @") (|_OBJ_1|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
 ^0*ENDJOB[]
 ^0*BEGINJOB[1( |_BEGINJOB_2| 2)]
 ^0*JOBPAR[0 |_JOBPAR_R| |_JOBPAR_2| " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
-^0*OBJ[1 0 0 0 (" +textBox_matriz.Text + @") (|_OBJ_2|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+^0*OBJ[1 0 0 0 (" + textBox_matriz.Text + @") (|_OBJ_2|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
 ^0*ENDJOB[]
 ^0*JOBORG[1 " + resultado.Item3.ToString() + @" 0]
 ^0*JOBORG[2 " + resultado.Item4.ToString() + @" 1]
@@ -197,7 +197,7 @@ namespace Aplicacion1
                     parametros.Add("|_BEGINJOB_1|", valoresEncontrados1["Name"][0]);
                     parametros.Add("|_BEGINJOB_2|", valoresEncontrados1["Name"][0]);
                     parametros.Add("|_JOBPAR_2|", resultado.Item2.ToString());
-                    parametros.Add("|_JOBPAR_R|", (resultado.Item1-1).ToString());
+                    parametros.Add("|_JOBPAR_R|", (resultado.Item1 - 1).ToString());
                     parametros.Add("|_OBJ_1|", valoresEncontrados1["MarkingTextBegin"][1]);
                     parametros.Add("|_OBJ_2|", valoresEncontrados1["MarkingTextEndless"][1]);
 
@@ -214,12 +214,18 @@ namespace Aplicacion1
                     imprimir();
 
                     textBox_Comando.Text = "El mensaje modificado ha sido enviado";
+                    File.Delete(MiConfig.Ruta);
                 }
                 else
                 {
                     textBox_Comando.Text = "El archivo1 no existe.";
                 }
+
+
             }
+
+           
+
             catch (Exception ex)
             {
                 MessageBox.Show("Ocurrió un error al leer el archivo verifique el archivo seleccionado: " + ex.Message);
@@ -274,8 +280,7 @@ namespace Aplicacion1
             textBox_Respuesta.AppendText(">> "  + command + "\r\n" ); //impresion mensaje
             textBox_Respuesta.AppendText(">> " + response + "\r\n");//impresion respuesta
             textBox_Comando.Clear();//limpiamos la consola
-
-
+            
             client.Disconnect();
             client = null;
         }
@@ -292,7 +297,14 @@ namespace Aplicacion1
             }
 
             // Envía el comando a la impresora
-            response = await client.SendCommand(command);
+            if (client != null)
+            {
+                response = await client.SendCommand(command);
+            }
+            else
+            {
+                Console.WriteLine("La conexión no se estableció correctamente.");
+            }
         }
 
         // evento para detectar cuando se presiona enter
