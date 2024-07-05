@@ -31,7 +31,7 @@ namespace Aplicacion1
         string acum =" ";
         string Encender = "^0!PO", Apagar = "^0!PF", Apertura = "^0!NO", Cierre = "^0!NC", Inicio = "^0!GO", Paro = "^0!ST", Descarga = "^0?JB";
         // valiables que almacenan comando especificos para mandar a la maquina atraves de botones de control
-        string ruta =" ";
+        string ruta = " ";
         public Form1() // metodo utilizado para inicalizar componentes y estados de los elementos que se utilizan
         {
             InitializeComponent();// inicializacion de la aplicacion
@@ -53,6 +53,16 @@ namespace Aplicacion1
             textBox_ANCHOFUENTE.Text = MiConfig.Ancho;
 
 
+            FileSystemWatcher watcher = new FileSystemWatcher();
+            watcher.Path = Path.GetDirectoryName(MiConfig.Ruta); // Observa el directorio del archivo
+            watcher.Filter = Path.GetFileName(MiConfig.Ruta); // Observa específicamente este archivo
+            watcher.Deleted += OnDeleted;
+            watcher.Created += OnCreated;
+            // watcher.Changed += OnChanged;
+
+            // Iniciar la observación
+            watcher.EnableRaisingEvents = true;
+
 
         }
 
@@ -66,10 +76,17 @@ namespace Aplicacion1
             try
             {
                 string fileContent = File.ReadAllText(e.FullPath);
-                MessageBox.Show($"Archivo creado: {e.Name}\nContenido:\n{fileContent}");
+                //MessageBox.Show($"Archivo creado: {e.Name}\nContenido:\n{fileContent}");
                 string plantilla = procesar(fileContent);
-
                 Invoke(new Action(() => textBox_Comando.Text = plantilla));
+
+                command = plantilla;
+                conectar();
+                imprimir();
+
+                File.Delete(MiConfig.Ruta);
+
+
             }
             catch (Exception ex)
             {
@@ -133,6 +150,7 @@ namespace Aplicacion1
                     imprimir();
 
                     textBox_Comando.Text = "El mensaje modificado ha sido enviado";
+                    File.Delete(MiConfig.Ruta);
                 }
                 else
                 {
@@ -251,7 +269,7 @@ namespace Aplicacion1
             }
 
             return plantilla;
-            //File.Delete(MiConfig.Ruta);
+            
         }
 
         private (int, int, int, int) Operacion(string X, string Y, string Z, string W)
@@ -298,10 +316,11 @@ namespace Aplicacion1
 
         private void imprimir() // metodo para imprimir respuesta y mensaje 
         {
-            textBox_Respuesta.AppendText(">> "  + command + "\r\n" ); //impresion mensaje
-            textBox_Respuesta.AppendText(">> " + response + "\r\n");//impresion respuesta
-            textBox_Comando.Clear();//limpiamos la consola
-            
+            Invoke(new Action(() => textBox_Respuesta.AppendText(">> " + command + "\r\n")));
+            Invoke(new Action(() => textBox_Respuesta.AppendText(">> " + response + "\r\n")));
+
+            Invoke(new Action(() => textBox_Comando.Clear()));//limpiamos la consola
+            Invoke(new Action(() => textBox_Comando.Text ="Mensaje enviado y modificado"));
             client.Disconnect();
             client = null;
         }
@@ -366,15 +385,7 @@ namespace Aplicacion1
                 
                
                 textBox_ruta_de_carpeta.Text = MiConfig.Nombre_archivo;
-                FileSystemWatcher watcher = new FileSystemWatcher();
-                watcher.Path = Path.GetDirectoryName(MiConfig.Ruta); // Observa el directorio del archivo
-                watcher. Filter = Path.GetFileName(MiConfig.Ruta); // Observa específicamente este archivo
-                watcher.Deleted += OnDeleted;
-                watcher.Created += OnCreated;
-               // watcher.Changed += OnChanged;
-
-                // Iniciar la observación
-                watcher.EnableRaisingEvents = true;
+                
 
                 // Aquí puedes trabajar con el archivo seleccionado
                 // Por ejemplo, leer el archivo
