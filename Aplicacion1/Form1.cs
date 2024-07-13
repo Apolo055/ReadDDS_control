@@ -28,7 +28,26 @@ namespace Aplicacion1
         string command = "", response = ""; // variable para almacenar la respuesta y mensaje que se envia entre el usuario y la maquina
         string filePath2;
         double Tamcaracter = 0.0;
-        string acum =" ";
+        string joborg1 = " ";
+        string plantilla = "";
+        string joborg2 = " ";
+        string begingjob = " ";
+        string obj1 = " ";
+        string obj2 = " ";
+        string jobparR = " ";
+        string jobpar2 = " ";
+        string acum = " ";
+
+        string Distancia_Total = "";
+        string mark1 = "";
+        string mark2 = "";
+        string mark3 = "";
+        int longitud = 0;
+        int anchoFuente = 0;
+
+       
+
+
         string Encender = "^0!PO", Apagar = "^0!PF", Apertura = "^0!NO", Cierre = "^0!NC", Inicio = "^0!GO", Paro = "^0!ST", Descarga = "^0?JB";
         // valiables que almacenan comando especificos para mandar a la maquina atraves de botones de control
         string ruta = " ";
@@ -198,13 +217,13 @@ namespace Aplicacion1
             }
 
 
-            string Distancia_Total = valoresEncontrados1["WireLength"][0];
-            string mark1 = valoresEncontrados1["MarkingTextBegin"][0];
-            string mark2 = valoresEncontrados1["MarkingTextEndless"][0];
-            string mark3 = valoresEncontrados1["MarkingTextEnd"][0];
+            Distancia_Total = valoresEncontrados1["WireLength"][0];
+            mark1 = valoresEncontrados1["MarkingTextBegin"][0];
+            mark2 = valoresEncontrados1["MarkingTextEndless"][0];
+            mark3 = valoresEncontrados1["MarkingTextEnd"][0];
 
-            int longitud = valoresEncontrados1["MarkingTextBegin"][1].Length;
-            int anchoFuente = 0;
+            longitud = valoresEncontrados1["MarkingTextBegin"][1].Length;
+            anchoFuente = 0;
             bool isParsed = int.TryParse(textBox_ANCHOFUENTE.Text, out anchoFuente);
 
             if (isParsed)
@@ -229,7 +248,8 @@ namespace Aplicacion1
             }
 
             var resultado = Operacion(Distancia_Total, mark1, mark2, mark3);
-
+            joborg1 = resultado.Item3.ToString();
+            joborg2 = resultado.Item4.ToString();
 
             string plantilla =
 
@@ -240,17 +260,21 @@ namespace Aplicacion1
 ^0*MOBAPARAMETERUSAGE[0]
 ^0*BEGINJOB[0 (|_BEGINJOB_1| 1)]
 ^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
-^0*OBJ[1 1 0 0 (" + textBox_matriz.Text + @") (|_OBJ_1|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+^0*OBJ[1 1 0 0 (ISO1_" + textBox_matriz.Text + @") (|_OBJ_1|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
 ^0*ENDJOB[]
 ^0*BEGINJOB[1( |_BEGINJOB_2| 2)]
 ^0*JOBPAR[0 |_JOBPAR_R| |_JOBPAR_2| " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
-^0*OBJ[1 0 0 0 (" + textBox_matriz.Text + @") (|_OBJ_2|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (|_OBJ_2|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
 ^0*ENDJOB[]
 ^0*JOBORG[1 " + resultado.Item3.ToString() + @" 0]
 ^0*JOBORG[2 " + resultado.Item4.ToString() + @" 1]
 ^0*ENDLJSCRIPT[]
 ";
 
+            begingjob = valoresEncontrados1["Name"][0];
+            obj1 = valoresEncontrados1["MarkingTextEndless"][1];
+            jobparR = (resultado.Item1 - 1).ToString();
+            jobpar2 = resultado.Item2.ToString();
 
 
 
@@ -268,6 +292,7 @@ namespace Aplicacion1
                 plantilla = plantilla.Replace(item.Key, item.Value);
             }
 
+            
             return plantilla;
             
         }
@@ -313,6 +338,35 @@ namespace Aplicacion1
             }
         }
 
+        private void actualizar()
+        {
+
+            anchoFuente = 0;
+            bool isParsed = int.TryParse(textBox_ANCHOFUENTE.Text, out anchoFuente);
+
+            if (isParsed)
+            {
+                string texto = textBox_matriz.Text; // Obtén el texto del TextBox
+                string[] partes = texto.Split('x'); // Divide el texto por 'X'
+                double numero;
+                if (Double.TryParse(partes[1], out numero)) // Intenta convertir la segunda parte a double
+                {
+                    //Console.WriteLine(numero.ToString());
+                    Tamcaracter = longitud * ((anchoFuente * 0.001) * (numero + 1.0));// Aquí puedes usar la variable 'numero'
+                }
+                else
+                {
+                    MessageBox.Show("El valor en textBox_Matriz no es esta en un formato válido."); // Maneja el caso en que la conversión a double falla
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("El valor en textBox_ANCHOFUENTE no es un número entero válido.");
+            }
+
+            
+        }
 
         private void imprimir() // metodo para imprimir respuesta y mensaje 
         {
@@ -451,6 +505,49 @@ namespace Aplicacion1
             MiConfig.Ancho = textBox_ANCHOFUENTE.Text;
             Configuracion.GuardarConfiguracion();
 
+        }
+
+        private void button_actualizar_Click(object sender, EventArgs e)
+        {
+
+            actualizar();
+            var resultado = Operacion(Distancia_Total, mark1, mark2, mark3);
+            jobparR = (resultado.Item1 - 1).ToString();
+            jobpar2 = resultado.Item2.ToString();
+            joborg1 = resultado.Item3.ToString();
+            joborg2 = resultado.Item4.ToString();
+            string plantilla =
+
+@"
+^0*BEGINLJSCRIPT[(V01.06.00.31)]
+^0*JLPAR[" + textBox_altura.Text + @" 1 0 3 30 0 0 9900 00:00 0 7000 0 0 1000 0 0]
+^0*VISION[0 1 0 55000 3 5 3 5 0]
+^0*MOBAPARAMETERUSAGE[0]
+^0*BEGINJOB[0 ( "+ begingjob+ @" 1)]
+^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
+^0*OBJ[1 1 0 0 (ISO1_" + textBox_matriz.Text + @") ("+ obj1+ @") 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+^0*ENDJOB[]
+^0*BEGINJOB[1( " + begingjob+ @" 2)]
+^0*JOBPAR[0 "+ jobparR+ @" "+ jobpar2+ @" " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
+^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") ("+ obj1+ @") 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+^0*ENDJOB[]
+^0*JOBORG[1 " + joborg1 + @" 0]
+^0*JOBORG[2 " + joborg2 + @" 1]
+^0*ENDLJSCRIPT[]
+";
+            textBox_Respuesta.Text = plantilla;
+
+            command = plantilla;
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            command = plantilla;
+            await conectar();
+            imprimir();
+
+            textBox_Comando.Text = "El mensaje modificado ha sido enviado";
+            File.Delete(MiConfig.Ruta);
         }
 
         private async void button_Encender_Click(object sender, EventArgs e)

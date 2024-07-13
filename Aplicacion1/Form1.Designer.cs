@@ -45,6 +45,7 @@
             this.label_serial = new System.Windows.Forms.Label();
             this.textBox_Comando = new System.Windows.Forms.TextBox();
             this.groupBox_Botonesdecontrol = new System.Windows.Forms.GroupBox();
+            this.button_actualizar = new System.Windows.Forms.Button();
             this.button_leer = new System.Windows.Forms.Button();
             this.button_descarga = new System.Windows.Forms.Button();
             this.button_paro = new System.Windows.Forms.Button();
@@ -59,7 +60,6 @@
             this.textBox_Respuesta = new System.Windows.Forms.TextBox();
             this.openFileDialog_dds = new System.Windows.Forms.OpenFileDialog();
             this.openFileDialog_txt = new System.Windows.Forms.OpenFileDialog();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label_matriz = new System.Windows.Forms.Label();
             this.label_altura = new System.Windows.Forms.Label();
             this.label_Modoimpresion = new System.Windows.Forms.Label();
@@ -68,6 +68,14 @@
             this.textBox_altura = new System.Windows.Forms.TextBox();
             this.textBox_modoPG = new System.Windows.Forms.TextBox();
             this.textBox_ANCHOFUENTE = new System.Windows.Forms.TextBox();
+            this.label_espejo = new System.Windows.Forms.Label();
+            this.label_orientacion = new System.Windows.Forms.Label();
+            this.label_resolucion = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBox_resolucion = new System.Windows.Forms.TextBox();
+            this.textBox_orientacion = new System.Windows.Forms.TextBox();
+            this.textBox_espejo = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox_Configuracion_comunicacion.SuspendLayout();
             this.groupBox_Botonesdecontrol.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -109,7 +117,7 @@
             // 
             this.radioButton_SSH.AutoSize = true;
             this.radioButton_SSH.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton_SSH.Location = new System.Drawing.Point(238, 50);
+            this.radioButton_SSH.Location = new System.Drawing.Point(229, 50);
             this.radioButton_SSH.Name = "radioButton_SSH";
             this.radioButton_SSH.Size = new System.Drawing.Size(222, 30);
             this.radioButton_SSH.TabIndex = 3;
@@ -123,7 +131,7 @@
             this.textBox_Puerto.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox_Puerto.Location = new System.Drawing.Point(238, 158);
             this.textBox_Puerto.Name = "textBox_Puerto";
-            this.textBox_Puerto.Size = new System.Drawing.Size(249, 30);
+            this.textBox_Puerto.Size = new System.Drawing.Size(222, 30);
             this.textBox_Puerto.TabIndex = 7;
             this.textBox_Puerto.TextChanged += new System.EventHandler(this.textBox_Puerto_TextChanged);
             // 
@@ -132,7 +140,7 @@
             this.textBox_IP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox_IP.Location = new System.Drawing.Point(238, 107);
             this.textBox_IP.Name = "textBox_IP";
-            this.textBox_IP.Size = new System.Drawing.Size(249, 30);
+            this.textBox_IP.Size = new System.Drawing.Size(222, 30);
             this.textBox_IP.TabIndex = 8;
             this.textBox_IP.TextChanged += new System.EventHandler(this.textBox_IP_TextChanged);
             // 
@@ -157,7 +165,7 @@
             this.groupBox_Configuracion_comunicacion.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.groupBox_Configuracion_comunicacion.Location = new System.Drawing.Point(30, 37);
             this.groupBox_Configuracion_comunicacion.Name = "groupBox_Configuracion_comunicacion";
-            this.groupBox_Configuracion_comunicacion.Size = new System.Drawing.Size(512, 264);
+            this.groupBox_Configuracion_comunicacion.Size = new System.Drawing.Size(483, 264);
             this.groupBox_Configuracion_comunicacion.TabIndex = 10;
             this.groupBox_Configuracion_comunicacion.TabStop = false;
             this.groupBox_Configuracion_comunicacion.Text = "Configuracion de la cominicación";
@@ -175,7 +183,7 @@
             // 
             // button_dds
             // 
-            this.button_dds.Location = new System.Drawing.Point(429, 209);
+            this.button_dds.Location = new System.Drawing.Point(400, 209);
             this.button_dds.Name = "button_dds";
             this.button_dds.Size = new System.Drawing.Size(58, 32);
             this.button_dds.TabIndex = 15;
@@ -204,7 +212,7 @@
             // 
             this.textBox_ruta_de_carpeta.Location = new System.Drawing.Point(237, 209);
             this.textBox_ruta_de_carpeta.Name = "textBox_ruta_de_carpeta";
-            this.textBox_ruta_de_carpeta.Size = new System.Drawing.Size(185, 32);
+            this.textBox_ruta_de_carpeta.Size = new System.Drawing.Size(158, 32);
             this.textBox_ruta_de_carpeta.TabIndex = 12;
             // 
             // label1
@@ -245,13 +253,14 @@
             this.textBox_Comando.Location = new System.Drawing.Point(19, 46);
             this.textBox_Comando.Multiline = true;
             this.textBox_Comando.Name = "textBox_Comando";
-            this.textBox_Comando.Size = new System.Drawing.Size(394, 187);
+            this.textBox_Comando.Size = new System.Drawing.Size(315, 187);
             this.textBox_Comando.TabIndex = 16;
             this.textBox_Comando.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_Comando_KeyDown);
             // 
             // groupBox_Botonesdecontrol
             // 
             this.groupBox_Botonesdecontrol.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.groupBox_Botonesdecontrol.Controls.Add(this.button_actualizar);
             this.groupBox_Botonesdecontrol.Controls.Add(this.button_leer);
             this.groupBox_Botonesdecontrol.Controls.Add(this.button_descarga);
             this.groupBox_Botonesdecontrol.Controls.Add(this.button_paro);
@@ -261,18 +270,28 @@
             this.groupBox_Botonesdecontrol.Controls.Add(this.button_apagar);
             this.groupBox_Botonesdecontrol.Controls.Add(this.button_Encender);
             this.groupBox_Botonesdecontrol.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_Botonesdecontrol.Location = new System.Drawing.Point(573, 37);
+            this.groupBox_Botonesdecontrol.Location = new System.Drawing.Point(530, 37);
             this.groupBox_Botonesdecontrol.Name = "groupBox_Botonesdecontrol";
-            this.groupBox_Botonesdecontrol.Size = new System.Drawing.Size(358, 264);
+            this.groupBox_Botonesdecontrol.Size = new System.Drawing.Size(537, 264);
             this.groupBox_Botonesdecontrol.TabIndex = 20;
             this.groupBox_Botonesdecontrol.TabStop = false;
             this.groupBox_Botonesdecontrol.Text = "Control ";
             // 
+            // button_actualizar
+            // 
+            this.button_actualizar.Location = new System.Drawing.Point(362, 195);
+            this.button_actualizar.Name = "button_actualizar";
+            this.button_actualizar.Size = new System.Drawing.Size(149, 40);
+            this.button_actualizar.TabIndex = 8;
+            this.button_actualizar.Text = "Actualizar";
+            this.button_actualizar.UseVisualStyleBackColor = true;
+            this.button_actualizar.Click += new System.EventHandler(this.button_actualizar_Click);
+            // 
             // button_leer
             // 
-            this.button_leer.Location = new System.Drawing.Point(202, 214);
+            this.button_leer.Location = new System.Drawing.Point(362, 122);
             this.button_leer.Name = "button_leer";
-            this.button_leer.Size = new System.Drawing.Size(133, 39);
+            this.button_leer.Size = new System.Drawing.Size(149, 41);
             this.button_leer.TabIndex = 7;
             this.button_leer.Text = "Leer";
             this.button_leer.UseVisualStyleBackColor = true;
@@ -280,9 +299,9 @@
             // 
             // button_descarga
             // 
-            this.button_descarga.Location = new System.Drawing.Point(35, 214);
+            this.button_descarga.Location = new System.Drawing.Point(362, 55);
             this.button_descarga.Name = "button_descarga";
-            this.button_descarga.Size = new System.Drawing.Size(140, 39);
+            this.button_descarga.Size = new System.Drawing.Size(149, 41);
             this.button_descarga.TabIndex = 6;
             this.button_descarga.Text = "Descarga";
             this.button_descarga.UseVisualStyleBackColor = true;
@@ -291,7 +310,7 @@
             // button_paro
             // 
             this.button_paro.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_paro.Location = new System.Drawing.Point(203, 150);
+            this.button_paro.Location = new System.Drawing.Point(198, 195);
             this.button_paro.Name = "button_paro";
             this.button_paro.Size = new System.Drawing.Size(133, 40);
             this.button_paro.TabIndex = 5;
@@ -302,9 +321,9 @@
             // button_inicio
             // 
             this.button_inicio.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_inicio.Location = new System.Drawing.Point(203, 91);
+            this.button_inicio.Location = new System.Drawing.Point(198, 122);
             this.button_inicio.Name = "button_inicio";
-            this.button_inicio.Size = new System.Drawing.Size(132, 39);
+            this.button_inicio.Size = new System.Drawing.Size(132, 41);
             this.button_inicio.TabIndex = 4;
             this.button_inicio.Text = "Inicio";
             this.button_inicio.UseVisualStyleBackColor = true;
@@ -313,9 +332,9 @@
             // button_Cierre
             // 
             this.button_Cierre.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Cierre.Location = new System.Drawing.Point(203, 31);
+            this.button_Cierre.Location = new System.Drawing.Point(198, 54);
             this.button_Cierre.Name = "button_Cierre";
-            this.button_Cierre.Size = new System.Drawing.Size(132, 41);
+            this.button_Cierre.Size = new System.Drawing.Size(132, 42);
             this.button_Cierre.TabIndex = 3;
             this.button_Cierre.Text = "Cierre";
             this.button_Cierre.UseVisualStyleBackColor = true;
@@ -324,7 +343,7 @@
             // button_apertura
             // 
             this.button_apertura.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_apertura.Location = new System.Drawing.Point(35, 151);
+            this.button_apertura.Location = new System.Drawing.Point(19, 195);
             this.button_apertura.Name = "button_apertura";
             this.button_apertura.Size = new System.Drawing.Size(140, 40);
             this.button_apertura.TabIndex = 2;
@@ -335,7 +354,7 @@
             // button_apagar
             // 
             this.button_apagar.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_apagar.Location = new System.Drawing.Point(35, 90);
+            this.button_apagar.Location = new System.Drawing.Point(19, 122);
             this.button_apagar.Name = "button_apagar";
             this.button_apagar.Size = new System.Drawing.Size(140, 39);
             this.button_apagar.TabIndex = 1;
@@ -346,7 +365,7 @@
             // button_Encender
             // 
             this.button_Encender.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Encender.Location = new System.Drawing.Point(34, 33);
+            this.button_Encender.Location = new System.Drawing.Point(18, 55);
             this.button_Encender.Name = "button_Encender";
             this.button_Encender.Size = new System.Drawing.Size(141, 41);
             this.button_Encender.TabIndex = 0;
@@ -359,9 +378,9 @@
             this.groupBox1.BackColor = System.Drawing.Color.LightSteelBlue;
             this.groupBox1.Controls.Add(this.textBox_Comando);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(1409, 40);
+            this.groupBox1.Location = new System.Drawing.Point(1088, 40);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(434, 261);
+            this.groupBox1.Size = new System.Drawing.Size(355, 261);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Consola de comandos";
@@ -369,19 +388,20 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.button_Limpiar);
             this.groupBox2.Controls.Add(this.textBox_Respuesta);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(30, 340);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1813, 399);
+            this.groupBox2.Size = new System.Drawing.Size(1413, 399);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Consola de Respuesta";
             // 
             // button_Limpiar
             // 
-            this.button_Limpiar.Location = new System.Drawing.Point(845, 15);
+            this.button_Limpiar.Location = new System.Drawing.Point(671, 15);
             this.button_Limpiar.Name = "button_Limpiar";
             this.button_Limpiar.Size = new System.Drawing.Size(125, 39);
             this.button_Limpiar.TabIndex = 7;
@@ -397,7 +417,7 @@
             this.textBox_Respuesta.Location = new System.Drawing.Point(30, 58);
             this.textBox_Respuesta.Multiline = true;
             this.textBox_Respuesta.Name = "textBox_Respuesta";
-            this.textBox_Respuesta.Size = new System.Drawing.Size(1755, 320);
+            this.textBox_Respuesta.Size = new System.Drawing.Size(1362, 320);
             this.textBox_Respuesta.TabIndex = 0;
             // 
             // openFileDialog_dds
@@ -408,32 +428,13 @@
             // 
             this.openFileDialog_txt.FileName = "openFileDialog1";
             // 
-            // groupBox3
-            // 
-            this.groupBox3.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.groupBox3.Controls.Add(this.textBox_ANCHOFUENTE);
-            this.groupBox3.Controls.Add(this.textBox_modoPG);
-            this.groupBox3.Controls.Add(this.textBox_altura);
-            this.groupBox3.Controls.Add(this.textBox_matriz);
-            this.groupBox3.Controls.Add(this.label_anchofuente);
-            this.groupBox3.Controls.Add(this.label_Modoimpresion);
-            this.groupBox3.Controls.Add(this.label_altura);
-            this.groupBox3.Controls.Add(this.label_matriz);
-            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(959, 40);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(422, 261);
-            this.groupBox3.TabIndex = 23;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Configuración de parametros ";
-            // 
             // label_matriz
             // 
             this.label_matriz.AutoSize = true;
             this.label_matriz.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_matriz.Location = new System.Drawing.Point(25, 47);
             this.label_matriz.Name = "label_matriz";
-            this.label_matriz.Size = new System.Drawing.Size(89, 29);
+            this.label_matriz.Size = new System.Drawing.Size(83, 26);
             this.label_matriz.TabIndex = 0;
             this.label_matriz.Text = "Matriz :";
             // 
@@ -443,7 +444,7 @@
             this.label_altura.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_altura.Location = new System.Drawing.Point(23, 100);
             this.label_altura.Name = "label_altura";
-            this.label_altura.Size = new System.Drawing.Size(227, 29);
+            this.label_altura.Size = new System.Drawing.Size(206, 26);
             this.label_altura.TabIndex = 1;
             this.label_altura.Text = "Altura de impresión:";
             // 
@@ -453,7 +454,7 @@
             this.label_Modoimpresion.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_Modoimpresion.Location = new System.Drawing.Point(24, 159);
             this.label_Modoimpresion.Name = "label_Modoimpresion";
-            this.label_Modoimpresion.Size = new System.Drawing.Size(228, 29);
+            this.label_Modoimpresion.Size = new System.Drawing.Size(203, 26);
             this.label_Modoimpresion.TabIndex = 2;
             this.label_Modoimpresion.Text = "Modo de impresión:";
             // 
@@ -463,7 +464,7 @@
             this.label_anchofuente.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_anchofuente.Location = new System.Drawing.Point(28, 211);
             this.label_anchofuente.Name = "label_anchofuente";
-            this.label_anchofuente.Size = new System.Drawing.Size(192, 29);
+            this.label_anchofuente.Size = new System.Drawing.Size(176, 26);
             this.label_anchofuente.TabIndex = 3;
             this.label_anchofuente.Text = "Ancho de fuente:";
             // 
@@ -498,6 +499,92 @@
             this.textBox_ANCHOFUENTE.Size = new System.Drawing.Size(144, 32);
             this.textBox_ANCHOFUENTE.TabIndex = 7;
             this.textBox_ANCHOFUENTE.TextChanged += new System.EventHandler(this.textBox_ANCHOFUENTE_TextChanged);
+            // 
+            // label_espejo
+            // 
+            this.label_espejo.AutoSize = true;
+            this.label_espejo.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_espejo.Location = new System.Drawing.Point(28, 268);
+            this.label_espejo.Name = "label_espejo";
+            this.label_espejo.Size = new System.Drawing.Size(91, 26);
+            this.label_espejo.TabIndex = 8;
+            this.label_espejo.Text = "Espejo :";
+            // 
+            // label_orientacion
+            // 
+            this.label_orientacion.AutoSize = true;
+            this.label_orientacion.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_orientacion.Location = new System.Drawing.Point(27, 329);
+            this.label_orientacion.Name = "label_orientacion";
+            this.label_orientacion.Size = new System.Drawing.Size(135, 26);
+            this.label_orientacion.TabIndex = 9;
+            this.label_orientacion.Text = "Orientación :";
+            // 
+            // label_resolucion
+            // 
+            this.label_resolucion.AutoSize = true;
+            this.label_resolucion.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_resolucion.Location = new System.Drawing.Point(27, 381);
+            this.label_resolucion.Name = "label_resolucion";
+            this.label_resolucion.Size = new System.Drawing.Size(132, 26);
+            this.label_resolucion.TabIndex = 10;
+            this.label_resolucion.Text = "Resolución :";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.groupBox3.Controls.Add(this.textBox_resolucion);
+            this.groupBox3.Controls.Add(this.textBox_orientacion);
+            this.groupBox3.Controls.Add(this.textBox_espejo);
+            this.groupBox3.Controls.Add(this.label_resolucion);
+            this.groupBox3.Controls.Add(this.label_orientacion);
+            this.groupBox3.Controls.Add(this.label_espejo);
+            this.groupBox3.Controls.Add(this.textBox_ANCHOFUENTE);
+            this.groupBox3.Controls.Add(this.textBox_modoPG);
+            this.groupBox3.Controls.Add(this.textBox_altura);
+            this.groupBox3.Controls.Add(this.textBox_matriz);
+            this.groupBox3.Controls.Add(this.label_anchofuente);
+            this.groupBox3.Controls.Add(this.label_Modoimpresion);
+            this.groupBox3.Controls.Add(this.label_altura);
+            this.groupBox3.Controls.Add(this.label_matriz);
+            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox3.Location = new System.Drawing.Point(1467, 40);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(426, 699);
+            this.groupBox3.TabIndex = 23;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Configuración de parametros ";
+            // 
+            // textBox_resolucion
+            // 
+            this.textBox_resolucion.Location = new System.Drawing.Point(264, 382);
+            this.textBox_resolucion.Name = "textBox_resolucion";
+            this.textBox_resolucion.Size = new System.Drawing.Size(139, 32);
+            this.textBox_resolucion.TabIndex = 26;
+            // 
+            // textBox_orientacion
+            // 
+            this.textBox_orientacion.Location = new System.Drawing.Point(262, 327);
+            this.textBox_orientacion.Name = "textBox_orientacion";
+            this.textBox_orientacion.Size = new System.Drawing.Size(141, 32);
+            this.textBox_orientacion.TabIndex = 25;
+            // 
+            // textBox_espejo
+            // 
+            this.textBox_espejo.Location = new System.Drawing.Point(260, 266);
+            this.textBox_espejo.Name = "textBox_espejo";
+            this.textBox_espejo.Size = new System.Drawing.Size(142, 32);
+            this.textBox_espejo.TabIndex = 24;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1234, 15);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(129, 40);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "Enviar";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
@@ -559,15 +646,23 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog_txt;
         private System.Windows.Forms.Label label_velocidad;
         private System.Windows.Forms.Label label_serial;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label label_altura;
         private System.Windows.Forms.Label label_matriz;
-        private System.Windows.Forms.TextBox textBox_ANCHOFUENTE;
-        private System.Windows.Forms.TextBox textBox_modoPG;
-        private System.Windows.Forms.TextBox textBox_altura;
-        private System.Windows.Forms.TextBox textBox_matriz;
-        private System.Windows.Forms.Label label_anchofuente;
+        private System.Windows.Forms.Label label_altura;
         private System.Windows.Forms.Label label_Modoimpresion;
+        private System.Windows.Forms.Label label_anchofuente;
+        private System.Windows.Forms.TextBox textBox_matriz;
+        private System.Windows.Forms.TextBox textBox_altura;
+        private System.Windows.Forms.TextBox textBox_modoPG;
+        private System.Windows.Forms.TextBox textBox_ANCHOFUENTE;
+        private System.Windows.Forms.Label label_espejo;
+        private System.Windows.Forms.Label label_orientacion;
+        private System.Windows.Forms.Label label_resolucion;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox textBox_espejo;
+        private System.Windows.Forms.TextBox textBox_resolucion;
+        private System.Windows.Forms.TextBox textBox_orientacion;
+        private System.Windows.Forms.Button button_actualizar;
+        private System.Windows.Forms.Button button1;
     }
 }
 
