@@ -63,6 +63,8 @@ namespace Aplicacion1
             label_velocidad.Visible = false;
             button_leer.Visible = true;
             label_serial.Visible = false;
+            textBox_espejo.Visible = false;
+            textBox_orientacion.Visible = false;
             textBox_ruta_de_carpeta.Text = MiConfig.Nombre_archivo;
             textBox_IP.Text = MiConfig.IP;
             textBox_Puerto.Text = MiConfig.Puerto;
@@ -70,12 +72,14 @@ namespace Aplicacion1
             textBox_altura.Text = MiConfig.Altura;
             textBox_modoPG.Text = MiConfig.Modo;
             textBox_ANCHOFUENTE.Text = MiConfig.Ancho;
+            textBox_espejo.Text = MiConfig.espejo;
+            textBox_resolucion.Text = MiConfig.resolucion;
+            textBox_orientacion.Text = MiConfig.orientacion;
 
 
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.Path = Path.GetDirectoryName(MiConfig.Ruta); // Observa el directorio del archivo
-            watcher.Filter = Path.GetFileName(MiConfig.Ruta); // Observa específicamente este archivo
-            watcher.Deleted += OnDeleted;
+            watcher.Filter = Path.GetFileName(MiConfig.Ruta); // Observa específicamente este archivo          
             watcher.Created += OnCreated;
             // watcher.Changed += OnChanged;
 
@@ -103,6 +107,7 @@ namespace Aplicacion1
                 conectar();
                 imprimir();
 
+                
                 File.Delete(MiConfig.Ruta);
 
 
@@ -114,12 +119,6 @@ namespace Aplicacion1
            // button_leer_Click(this, EventArgs.Empty);
             
 
-        }
-
-        private void OnDeleted(object sender, FileSystemEventArgs e)
-        {
-            //mandamos mensaje de adevertencia utilizando otro hilo para advertir que se ha borrado el documento
-            //textBox_Comando.Text=($"El archivo {e.Name} ha sido {e.ChangeType}");
         }
 
        /* private void OnChanged(object source, FileSystemEventArgs e)
@@ -251,15 +250,18 @@ namespace Aplicacion1
             joborg1 = resultado.Item3.ToString();
             joborg2 = resultado.Item4.ToString();
 
+            Invoke(new Action(() => textBox_orientacion.Text = comboBox_orientacion.Text));
+            Invoke(new Action(() => textBox_espejo.Text = comboBox_espejo.Text));
+
             string plantilla =
 
 @"
 ^0*BEGINLJSCRIPT[(V01.06.00.31)]
-^0*JLPAR[" + textBox_altura.Text + @" 1 0 3 30 0 0 9900 00:00 0 7000 0 0 1000 0 0]
+^0*JLPAR[" + textBox_altura.Text + @" 1 0 3 30 " + textBox_orientacion.Text + @" " + textBox_espejo.Text + @" " + textBox_resolucion.Text + @" 00:00 0 7000 0 0 1000 0 0]
 ^0*VISION[0 1 0 55000 3 5 3 5 0]
 ^0*MOBAPARAMETERUSAGE[0]
 ^0*BEGINJOB[0 (|_BEGINJOB_1| 1)]
-^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
+^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
 ^0*OBJ[1 1 0 0 (ISO1_" + textBox_matriz.Text + @") (|_OBJ_1|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
 ^0*ENDJOB[]
 ^0*BEGINJOB[1( |_BEGINJOB_2| 2)]
@@ -520,11 +522,11 @@ namespace Aplicacion1
 
 @"
 ^0*BEGINLJSCRIPT[(V01.06.00.31)]
-^0*JLPAR[" + textBox_altura.Text + @" 1 0 3 30 0 0 9900 00:00 0 7000 0 0 1000 0 0]
+^0*JLPAR[" + textBox_altura.Text + @" 1 0 3 30 " + comboBox_orientacion.Text + @" " + comboBox_espejo.Text + @" " + textBox_resolucion.Text + @" 00:00 0 7000 0 0 1000 0 0]
 ^0*VISION[0 1 0 55000 3 5 3 5 0]
 ^0*MOBAPARAMETERUSAGE[0]
-^0*BEGINJOB[0 ( "+ begingjob+ @" 1)]
-^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
+^0*BEGINJOB[0 ( " + begingjob+ @" 1)]
+^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
 ^0*OBJ[1 1 0 0 (ISO1_" + textBox_matriz.Text + @") ("+ obj1+ @") 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
 ^0*ENDJOB[]
 ^0*BEGINJOB[1( " + begingjob+ @" 2)]
@@ -542,12 +544,32 @@ namespace Aplicacion1
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            command = plantilla;
+            command = textBox_Respuesta.Text.Trim();
             await conectar();
             imprimir();
 
-            textBox_Comando.Text = "El mensaje modificado ha sido enviado";
-            File.Delete(MiConfig.Ruta);
+            textBox_Comando.Text = "El mensaje modificado ha sido enviado ACTUALIZADO Y ENVIADO";
+           
+        }
+
+        private void textBox_espejo_TextChanged(object sender, EventArgs e)
+        {
+            MiConfig.espejo = textBox_espejo.Text;
+            Configuracion.GuardarConfiguracion();
+
+        }
+
+        private void textBox_orientacion_TextChanged(object sender, EventArgs e)
+        {
+            MiConfig.orientacion = textBox_orientacion.Text;
+            Configuracion.GuardarConfiguracion();
+        }
+
+        private void textBox_resolucion_TextChanged(object sender, EventArgs e)
+        {
+            MiConfig.resolucion = textBox_resolucion.Text;
+            Configuracion.GuardarConfiguracion();
+
         }
 
         private async void button_Encender_Click(object sender, EventArgs e)
@@ -742,8 +764,8 @@ namespace Aplicacion1
 
             if (stream != null && client.Connected) // verificamos que exista conexion
             {
-                try
-                {
+                //try
+                //{
                     // Agrega un carácter de nueva línea al final del comando
                     command += "\r\n";
 
@@ -767,11 +789,11 @@ namespace Aplicacion1
                     }
 
                     response = completeMessage.ToString();// guardamos la respuesta leida en rezponse y la convertimos en string
-                }
-                catch (Exception ex)
-                {
-                    error = "Error al enviar/recibir comando: " + ex.Message;
-                }
+               // }
+               // catch (Exception ex)
+                //{
+                  //  error = "Error al enviar/recibir comando: " + ex.Message;
+               // }
             }
             else
             {

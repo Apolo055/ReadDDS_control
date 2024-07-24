@@ -85,7 +85,7 @@ namespace Aplicacion1.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("80")]
         public string Altura {
             get {
                 return ((string)(this["Altura"]));
@@ -109,13 +109,49 @@ namespace Aplicacion1.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("400")]
         public string Ancho {
             get {
                 return ((string)(this["Ancho"]));
             }
             set {
                 this["Ancho"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string espejo {
+            get {
+                return ((string)(this["espejo"]));
+            }
+            set {
+                this["espejo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9900")]
+        public string resolucion {
+            get {
+                return ((string)(this["resolucion"]));
+            }
+            set {
+                this["resolucion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string orientacion {
+            get {
+                return ((string)(this["orientacion"]));
+            }
+            set {
+                this["orientacion"] = value;
             }
         }
     }

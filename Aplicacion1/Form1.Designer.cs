@@ -56,6 +56,7 @@
             this.button_Encender = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.button_Limpiar = new System.Windows.Forms.Button();
             this.textBox_Respuesta = new System.Windows.Forms.TextBox();
             this.openFileDialog_dds = new System.Windows.Forms.OpenFileDialog();
@@ -75,7 +76,8 @@
             this.textBox_resolucion = new System.Windows.Forms.TextBox();
             this.textBox_orientacion = new System.Windows.Forms.TextBox();
             this.textBox_espejo = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.comboBox_orientacion = new System.Windows.Forms.ComboBox();
+            this.comboBox_espejo = new System.Windows.Forms.ComboBox();
             this.groupBox_Configuracion_comunicacion.SuspendLayout();
             this.groupBox_Botonesdecontrol.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -399,6 +401,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Consola de Respuesta";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1234, 15);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(129, 40);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "Enviar";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // button_Limpiar
             // 
             this.button_Limpiar.Location = new System.Drawing.Point(671, 15);
@@ -504,7 +516,7 @@
             // 
             this.label_espejo.AutoSize = true;
             this.label_espejo.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_espejo.Location = new System.Drawing.Point(28, 268);
+            this.label_espejo.Location = new System.Drawing.Point(31, 395);
             this.label_espejo.Name = "label_espejo";
             this.label_espejo.Size = new System.Drawing.Size(91, 26);
             this.label_espejo.TabIndex = 8;
@@ -524,7 +536,7 @@
             // 
             this.label_resolucion.AutoSize = true;
             this.label_resolucion.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_resolucion.Location = new System.Drawing.Point(27, 381);
+            this.label_resolucion.Location = new System.Drawing.Point(27, 268);
             this.label_resolucion.Name = "label_resolucion";
             this.label_resolucion.Size = new System.Drawing.Size(132, 26);
             this.label_resolucion.TabIndex = 10;
@@ -533,6 +545,8 @@
             // groupBox3
             // 
             this.groupBox3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.groupBox3.Controls.Add(this.comboBox_espejo);
+            this.groupBox3.Controls.Add(this.comboBox_orientacion);
             this.groupBox3.Controls.Add(this.textBox_resolucion);
             this.groupBox3.Controls.Add(this.textBox_orientacion);
             this.groupBox3.Controls.Add(this.textBox_espejo);
@@ -557,34 +571,49 @@
             // 
             // textBox_resolucion
             // 
-            this.textBox_resolucion.Location = new System.Drawing.Point(264, 382);
+            this.textBox_resolucion.Location = new System.Drawing.Point(258, 268);
             this.textBox_resolucion.Name = "textBox_resolucion";
             this.textBox_resolucion.Size = new System.Drawing.Size(139, 32);
             this.textBox_resolucion.TabIndex = 26;
+            this.textBox_resolucion.TextChanged += new System.EventHandler(this.textBox_resolucion_TextChanged);
             // 
             // textBox_orientacion
             // 
-            this.textBox_orientacion.Location = new System.Drawing.Point(262, 327);
+            this.textBox_orientacion.Location = new System.Drawing.Point(29, 540);
             this.textBox_orientacion.Name = "textBox_orientacion";
             this.textBox_orientacion.Size = new System.Drawing.Size(141, 32);
             this.textBox_orientacion.TabIndex = 25;
+            this.textBox_orientacion.TextChanged += new System.EventHandler(this.textBox_orientacion_TextChanged);
             // 
             // textBox_espejo
             // 
-            this.textBox_espejo.Location = new System.Drawing.Point(260, 266);
+            this.textBox_espejo.Location = new System.Drawing.Point(255, 540);
             this.textBox_espejo.Name = "textBox_espejo";
             this.textBox_espejo.Size = new System.Drawing.Size(142, 32);
             this.textBox_espejo.TabIndex = 24;
+            this.textBox_espejo.TextChanged += new System.EventHandler(this.textBox_espejo_TextChanged);
             // 
-            // button1
+            // comboBox_orientacion
             // 
-            this.button1.Location = new System.Drawing.Point(1234, 15);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(129, 40);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Enviar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.comboBox_orientacion.FormattingEnabled = true;
+            this.comboBox_orientacion.Items.AddRange(new object[] {
+            "0",
+            "180"});
+            this.comboBox_orientacion.Location = new System.Drawing.Point(258, 329);
+            this.comboBox_orientacion.Name = "comboBox_orientacion";
+            this.comboBox_orientacion.Size = new System.Drawing.Size(139, 34);
+            this.comboBox_orientacion.TabIndex = 27;
+            // 
+            // comboBox_espejo
+            // 
+            this.comboBox_espejo.FormattingEnabled = true;
+            this.comboBox_espejo.Items.AddRange(new object[] {
+            "0",
+            "1"});
+            this.comboBox_espejo.Location = new System.Drawing.Point(258, 396);
+            this.comboBox_espejo.Name = "comboBox_espejo";
+            this.comboBox_espejo.Size = new System.Drawing.Size(145, 34);
+            this.comboBox_espejo.TabIndex = 28;
             // 
             // Form1
             // 
@@ -663,6 +692,8 @@
         private System.Windows.Forms.TextBox textBox_orientacion;
         private System.Windows.Forms.Button button_actualizar;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox comboBox_espejo;
+        private System.Windows.Forms.ComboBox comboBox_orientacion;
     }
 }
 

@@ -20,6 +20,9 @@ namespace Aplicacion1.Utilidades
             MiConfig.Altura = Properties.Settings.Default.Altura;
             MiConfig.Modo = Properties.Settings.Default.Modo;
             MiConfig.Ancho = Properties.Settings.Default.Ancho;
+            MiConfig.espejo = Properties.Settings.Default.espejo;
+            MiConfig.resolucion = Properties.Settings.Default.resolucion;
+            MiConfig.orientacion = Properties.Settings.Default.orientacion;
         }
 
         public static void GuardarConfiguracion()
@@ -33,9 +36,12 @@ namespace Aplicacion1.Utilidades
             Properties.Settings.Default.Altura = MiConfig.Altura;
             Properties.Settings.Default.Modo = MiConfig.Modo;
             Properties.Settings.Default.Ancho = MiConfig.Ancho;
+            Properties.Settings.Default.espejo = MiConfig.espejo;
+            Properties.Settings.Default.resolucion= MiConfig.resolucion;
+            Properties.Settings.Default.orientacion = MiConfig.orientacion;
             Properties.Settings.Default.Save();
 
-           
+
         }
     }
 
@@ -49,5 +55,8 @@ namespace Aplicacion1.Utilidades
         public static string Altura { get; set; } = "";
         public static string Modo { get; set; } = "";
         public static string Ancho { get; set; } = "";
+        public static string espejo { get; set; } = "";
+        public static string resolucion { get; set; } = "";
+        public static string orientacion { get; set; } = "";
     }
 }
