@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Aplicacion1.Properties {
+namespace Trapid.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -152,6 +152,18 @@ namespace Aplicacion1.Properties {
             }
             set {
                 this["orientacion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public string señalgo {
+            get {
+                return ((string)(this["señalgo"]));
+            }
+            set {
+                this["señalgo"] = value;
             }
         }
     }

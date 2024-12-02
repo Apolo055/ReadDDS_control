@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Aplicacion1
+namespace Trapid
 {
     internal static class Program
     {

@@ -1,0 +1,15 @@
+[NewArticle]
+ArticleKey = P00381841AA-C-154
+ArticleGroup = Group
+Name = "P00381841AA-C-154"
+Hint = "From CATS"
+[NewLeadSet1]
+WireKey = CATS18GXL
+WireLength = 210
+FontKey = CATSINK
+StrippingLength = 4.40,4.40
+TerminalKey = 3658469*18*GXL,3658470*18*GXL
+[NewMarkingTextWire1-2]
+MarkingTextBegin = 20,"A771",1
+MarkingTextEndless = 15,"A771",1
+MarkingTextEnd = 25,"A771",1

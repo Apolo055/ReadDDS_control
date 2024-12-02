@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aplicacion1.Utilidades
+namespace Trapid.Utilidades
 {
     internal class Configuracion
     {
@@ -23,6 +23,7 @@ namespace Aplicacion1.Utilidades
             MiConfig.espejo = Properties.Settings.Default.espejo;
             MiConfig.resolucion = Properties.Settings.Default.resolucion;
             MiConfig.orientacion = Properties.Settings.Default.orientacion;
+            MiConfig.señalgo = Properties.Settings.Default.señalgo;
         }
 
         public static void GuardarConfiguracion()
@@ -39,6 +40,7 @@ namespace Aplicacion1.Utilidades
             Properties.Settings.Default.espejo = MiConfig.espejo;
             Properties.Settings.Default.resolucion= MiConfig.resolucion;
             Properties.Settings.Default.orientacion = MiConfig.orientacion;
+            Properties.Settings.Default.señalgo = MiConfig.señalgo;
             Properties.Settings.Default.Save();
 
 
@@ -58,5 +60,6 @@ namespace Aplicacion1.Utilidades
         public static string espejo { get; set; } = "";
         public static string resolucion { get; set; } = "";
         public static string orientacion { get; set; } = "";
+        public static string señalgo { get; set; } = "";
     }
 }
