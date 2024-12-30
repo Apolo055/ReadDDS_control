@@ -137,7 +137,6 @@ namespace Trapid.Utilidades
             MiConfig.resolucion = Properties.Settings.Default.resolucion;
             MiConfig.orientacion = Properties.Settings.Default.orientacion;
             MiConfig.señalgo = Properties.Settings.Default.señalgo;
-            MiConfig.delay1 = Properties.Settings.Default.delay1;
         }
 
         public static void GuardarConfiguracion()
@@ -155,7 +154,7 @@ namespace Trapid.Utilidades
             Properties.Settings.Default.resolucion= MiConfig.resolucion;
             Properties.Settings.Default.orientacion = MiConfig.orientacion;
             Properties.Settings.Default.señalgo = MiConfig.señalgo;
-            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.Save();
 
 
         }
@@ -175,7 +174,6 @@ namespace Trapid.Utilidades
         public static string resolucion { get; set; } = "";
         public static string orientacion { get; set; } = "";
         public static string señalgo { get; set; } = "";
-        public static string delay1 { get; set; } = "";
     }
 }
 */

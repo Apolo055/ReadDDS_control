@@ -73,8 +73,6 @@
             this.label_orientacion = new System.Windows.Forms.Label();
             this.label_resolucion = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBox_Printgodelay = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox_signal = new System.Windows.Forms.ComboBox();
             this.comboBox_espejo = new System.Windows.Forms.ComboBox();
@@ -433,11 +431,7 @@
             this.textBox_Respuesta.Location = new System.Drawing.Point(30, 58);
             this.textBox_Respuesta.Multiline = true;
             this.textBox_Respuesta.Name = "textBox_Respuesta";
-<<<<<<< Updated upstream
             this.textBox_Respuesta.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-=======
-            this.textBox_Respuesta.ScrollBars = System.Windows.Forms.ScrollBars.Both;
->>>>>>> Stashed changes
             this.textBox_Respuesta.Size = new System.Drawing.Size(1362, 320);
             this.textBox_Respuesta.TabIndex = 0;
             // 
@@ -554,13 +548,13 @@
             // groupBox3
             // 
             this.groupBox3.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.groupBox3.Controls.Add(this.textBox_Printgodelay);
-            this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.comboBox_signal);
             this.groupBox3.Controls.Add(this.comboBox_espejo);
             this.groupBox3.Controls.Add(this.comboBox_orientacion);
             this.groupBox3.Controls.Add(this.textBox_resolucion);
+            this.groupBox3.Controls.Add(this.textBox_orientacion);
+            this.groupBox3.Controls.Add(this.textBox_espejo);
             this.groupBox3.Controls.Add(this.label_resolucion);
             this.groupBox3.Controls.Add(this.label_orientacion);
             this.groupBox3.Controls.Add(this.label_espejo);
@@ -579,25 +573,6 @@
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Configuración de parametros ";
-            // 
-            // textBox_Printgodelay
-            // 
-            this.textBox_Printgodelay.Location = new System.Drawing.Point(258, 545);
-            this.textBox_Printgodelay.Name = "textBox_Printgodelay";
-            this.textBox_Printgodelay.Size = new System.Drawing.Size(144, 32);
-            this.textBox_Printgodelay.TabIndex = 32;
-            this.textBox_Printgodelay.TextChanged += new System.EventHandler(this.textBox_Printgodelay_TextChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label4.Location = new System.Drawing.Point(28, 548);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(145, 26);
-            this.label4.TabIndex = 31;
-            this.label4.Text = "PrintGo-delay";
             // 
             // label2
             // 
@@ -656,17 +631,17 @@
             // 
             // textBox_orientacion
             // 
-            this.textBox_orientacion.Location = new System.Drawing.Point(1467, 737);
+            this.textBox_orientacion.Location = new System.Drawing.Point(29, 540);
             this.textBox_orientacion.Name = "textBox_orientacion";
-            this.textBox_orientacion.Size = new System.Drawing.Size(141, 22);
+            this.textBox_orientacion.Size = new System.Drawing.Size(141, 32);
             this.textBox_orientacion.TabIndex = 25;
             this.textBox_orientacion.TextChanged += new System.EventHandler(this.textBox_orientacion_TextChanged);
             // 
             // textBox_espejo
             // 
-            this.textBox_espejo.Location = new System.Drawing.Point(1751, 737);
+            this.textBox_espejo.Location = new System.Drawing.Point(255, 540);
             this.textBox_espejo.Name = "textBox_espejo";
-            this.textBox_espejo.Size = new System.Drawing.Size(142, 22);
+            this.textBox_espejo.Size = new System.Drawing.Size(142, 32);
             this.textBox_espejo.TabIndex = 24;
             this.textBox_espejo.TextChanged += new System.EventHandler(this.textBox_espejo_TextChanged);
             // 
@@ -682,8 +657,6 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox_Botonesdecontrol);
             this.Controls.Add(this.groupBox_Configuracion_comunicacion);
-            this.Controls.Add(this.textBox_orientacion);
-            this.Controls.Add(this.textBox_espejo);
             this.Name = "Form1";
             this.Text = "Trapid";
             this.groupBox_Configuracion_comunicacion.ResumeLayout(false);
@@ -696,7 +669,6 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -754,8 +726,6 @@
         private System.Windows.Forms.ComboBox comboBox_orientacion;
         private System.Windows.Forms.ComboBox comboBox_signal;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox_Printgodelay;
-        private System.Windows.Forms.Label label4;
     }
 }
 

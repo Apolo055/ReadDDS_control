@@ -13,12 +13,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-<<<<<<< Updated upstream
     <TargetFrameworkProfile />
     <PublishUrl>D:\version XP\</PublishUrl>
-=======
-    <PublishUrl>D:\version9.0_rapid\</PublishUrl>
->>>>>>> Stashed changes
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -28,11 +24,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-<<<<<<< Updated upstream
     <ApplicationRevision>36</ApplicationRevision>
-=======
-    <ApplicationRevision>38</ApplicationRevision>
->>>>>>> Stashed changes
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>

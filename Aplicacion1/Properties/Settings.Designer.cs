@@ -166,17 +166,5 @@ namespace Trapid.Properties {
                 this["señalgo"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public string delay1 {
-            get {
-                return ((string)(this["delay1"]));
-            }
-            set {
-                this["delay1"] = value;
-            }
-        }
     }
 }
