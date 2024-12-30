@@ -49,7 +49,8 @@ namespace Trapid
         int longitud = 0;
         int anchoFuente = 0;
         string signal = "";
-        
+        int senal_print = 0;
+
 
 
 
@@ -81,6 +82,7 @@ namespace Trapid
             textBox_espejo.Text = MiConfig.espejo;
             textBox_resolucion.Text = MiConfig.resolucion;
             textBox_orientacion.Text = MiConfig.orientacion;
+            textBox_Printgodelay.Text = MiConfig.delay1;
             comboBox_orientacion.Text = MiConfig.orientacion;
             comboBox_espejo.Text = MiConfig.espejo;
             comboBox_signal.Text = MiConfig.señalgo;
@@ -313,8 +315,10 @@ namespace Trapid
 
                 int printgo = Convert.ToInt32(textBox_modoPG.Text) - 1;
                 string modoPG = Convert.ToString(printgo);
-
-                plantilla =
+                Invoke(new Action(() => senal_print = Convert.ToInt32(comboBox_signal.Text)));
+                if (senal_print == 1) 
+                {
+                    plantilla =
 
 @"
 ^0*BEGINLJSCRIPT[(V01.06.00.31)]
@@ -322,11 +326,11 @@ namespace Trapid
 ^0*VISION[0 1 0 55000 3 5 3 5 0]
 ^0*MOBAPARAMETERUSAGE[0]
 ^0*BEGINJOB[0 (|_BEGINJOB_1| 1)]
-^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 "+ modoPG + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
 ^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (|_OBJ_1|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
 ^0*ENDJOB[]
 ^0*BEGINJOB[1 (|_BEGINJOB_2| 2)]
-^0*JOBPAR[0 |_JOBPAR_R| |_JOBPAR_2| " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+^0*JOBPAR[0 |_JOBPAR_R| |_JOBPAR_2| " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 "+ modoPG + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
 ^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (|_OBJ_2|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
 ^0*ENDJOB[]
 ^0*JOBORG[1 " + resultado.Item3.ToString() + @" 0]
@@ -334,28 +338,73 @@ namespace Trapid
 ^0*ENDLJSCRIPT[]
 ";
 
+                    // Trapid
+                    // ^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1"+ modoPG + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+                    //Trapid
+                    // ^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 11" + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+
+                    begingjob = valoresEncontrados1["Name"][0];
+                    obj1 = valoresEncontrados1["MarkingTextEndless"][1];
+                    jobparR = (resultado.Item1 - 1).ToString();
+                    jobpar2 = resultado.Item2.ToString();
+
+                    Dictionary<string, string> parametros = new Dictionary<string, string>
+                        {
+                            {"|_BEGINJOB_1|", valoresEncontrados1["Name"][0]},
+                            {"|_BEGINJOB_2|", valoresEncontrados1["Name"][0]},
+                            {"|_JOBPAR_2|", resultado.Item2.ToString()},
+                            {"|_JOBPAR_R|", (resultado.Item1 - 1).ToString()},
+                            {"|_OBJ_1|", valoresEncontrados1["MarkingTextBegin"][1]},
+                            {"|_OBJ_2|", valoresEncontrados1["MarkingTextEndless"][1]}
+                        };
+
+                    foreach (KeyValuePair<string, string> item in parametros)
+                    {
+                        plantilla = plantilla.Replace(item.Key, item.Value);
+                    }
+
+
+                }
+
+                else
+                {
+                    begingjob = valoresEncontrados1["Name"][0];
+                    obj1 = valoresEncontrados1["MarkingTextEndless"][1];
+                    jobparR = (resultado.Item1 - 1).ToString();
+                    jobpar2 = resultado.Item2.ToString();
+
+                    plantilla =
+
+@"
+^0*BEGINLJSCRIPT[(V01.06.00.31)]
+^0*JLPAR[" + textBox_altura.Text + @" " + signal + @" 0 3 400 " + textBox_orientacion.Text + @" " + textBox_espejo.Text + @" " + textBox_resolucion.Text + @" 00:00 1 7000 0 0 1000 0 0]
+^0*VISION[0 1 0 55000 3 5 3 5 0]
+^0*MOBAPARAMETERUSAGE[0]
+^0*BEGINJOB[0 (|_BEGINJOB_1| 1)]
+^0*JOBPAR[" + textBox_Printgodelay.Text + " 65535" + @" 0 " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 "+ modoPG + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (|_OBJ_2|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+^0*ENDJOB[]
+^0*ENDLJSCRIPT[]
+";
+                        Dictionary<string, string> parametros = new Dictionary<string, string>
+                        {
+                            {"|_BEGINJOB_1|", valoresEncontrados1["Name"][0]},
+                            {"|_OBJ_2|", valoresEncontrados1["MarkingTextBegin"][1]},
+       
+                        };
+
+                    foreach (KeyValuePair<string, string> item in parametros)
+                    {
+                        plantilla = plantilla.Replace(item.Key, item.Value);
+                    }
+
+
+                }
+
+                
+
                 //^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
 
-
-                begingjob = valoresEncontrados1["Name"][0];
-                obj1 = valoresEncontrados1["MarkingTextEndless"][1];
-                jobparR = (resultado.Item1 - 1).ToString();
-                jobpar2 = resultado.Item2.ToString();
-
-                Dictionary<string, string> parametros = new Dictionary<string, string>
-    {
-        {"|_BEGINJOB_1|", valoresEncontrados1["Name"][0]},
-        {"|_BEGINJOB_2|", valoresEncontrados1["Name"][0]},
-        {"|_JOBPAR_2|", resultado.Item2.ToString()},
-        {"|_JOBPAR_R|", (resultado.Item1 - 1).ToString()},
-        {"|_OBJ_1|", valoresEncontrados1["MarkingTextBegin"][1]},
-        {"|_OBJ_2|", valoresEncontrados1["MarkingTextEndless"][1]}
-    };
-
-                foreach (KeyValuePair<string, string> item in parametros)
-                {
-                    plantilla = plantilla.Replace(item.Key, item.Value);
-                }
                 return plantilla;
             }
             else
@@ -405,24 +454,27 @@ namespace Trapid
 
                     int printgo = Convert.ToInt32(textBox_modoPG.Text) - 1;
                     string modoPG = Convert.ToString(printgo);
+                Invoke(new Action(() => senal_print = Convert.ToInt32(comboBox_signal.Text)));
+                if (senal_print == 1)
+                {
                     plantilla =
- 
+
 @"
 ^0*BEGINLJSCRIPT[(V01.06.00.31)]
 ^0*JLPAR[" + textBox_altura.Text + @" " + signal + @" 0 3 400 " + textBox_orientacion.Text + @" " + textBox_espejo.Text + @" " + textBox_resolucion.Text + @" 00:00 1 7000 0 0 1000 0 0]
 ^0*VISION[0 1 0 55000 3 5 3 5 0]
 ^0*MOBAPARAMETERUSAGE[0]
 ^0*BEGINJOB[0 (|_BEGINJOB_1| 1)]
-^0*JOBPAR[|_JOBPAR_R1|"+" 1" + @" |_JOBPAR_2| " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+^0*JOBPAR[|_JOBPAR_R1|" + " 1" + @" |_JOBPAR_2| " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 "+ modoPG + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
 ^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (|_OBJ_2|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
 ^0*ENDJOB[]
 ^0*ENDLJSCRIPT[]
 ";
 
-                //^0*JOBPAR[|_JOBPAR_R1|"+" 1" + @" |_JOBPAR_2| " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+                    //^0*JOBPAR[|_JOBPAR_R1|"+" 1" + @" |_JOBPAR_2| " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
 
 
-                Dictionary<string, string> parametros = new Dictionary<string, string>
+                    Dictionary<string, string> parametros = new Dictionary<string, string>
     {
         {"|_BEGINJOB_1|", valoresEncontrados1["Name"][0]},
         {"|_JOBPAR_R1|",resultado1.Item3.ToString()},
@@ -430,9 +482,39 @@ namespace Trapid
         {"|_JOBPAR_2|",  joborg2},
     };
 
-                foreach (KeyValuePair<string, string> item in parametros)
+                    foreach (KeyValuePair<string, string> item in parametros)
+                    {
+                        plantilla = plantilla.Replace(item.Key, item.Value);
+                    }
+
+                }
+                else
                 {
-                    plantilla = plantilla.Replace(item.Key, item.Value);
+                plantilla =
+
+@"
+^0*BEGINLJSCRIPT[(V01.06.00.31)]
+^0*JLPAR[" + textBox_altura.Text + @" " + signal + @" 0 3 400 " + textBox_orientacion.Text + @" " + textBox_espejo.Text + @" " + textBox_resolucion.Text + @" 00:00 1 7000 0 0 1000 0 0]
+^0*VISION[0 1 0 55000 3 5 3 5 0]
+^0*MOBAPARAMETERUSAGE[0]
+^0*BEGINJOB[0 (|_BEGINJOB_1| 1)]
+^0*JOBPAR[" + textBox_Printgodelay.Text + " 65535" + @" 0 " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 "+ modoPG + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (|_OBJ_2|) 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+^0*ENDJOB[]
+^0*ENDLJSCRIPT[]
+";
+                    Dictionary<string, string> parametros = new Dictionary<string, string>
+                        {
+                            {"|_BEGINJOB_1|", valoresEncontrados1["Name"][0]},
+                            {"|_OBJ_2|", valoresEncontrados1["MarkingTextBegin"][1]},
+
+                        };
+
+                    foreach (KeyValuePair<string, string> item in parametros)
+                    {
+                        plantilla = plantilla.Replace(item.Key, item.Value);
+                    }
+
                 }
                 return plantilla;
             }
@@ -688,34 +770,41 @@ namespace Trapid
 
         private void button_actualizar_Click(object sender, EventArgs e)
         {
+            
+            Invoke(new Action(() => senal_print = Convert.ToInt32(comboBox_signal.Text)));
             if (endless == true)
             {
-                actualizar();
-                var resultado = Operacion(Distancia_Total, mark1, mark2, mark3);
-                jobparR = (resultado.Item1 - 1).ToString();
-                jobpar2 = resultado.Item2.ToString();
-                joborg1 = resultado.Item3.ToString();
-                joborg2 = resultado.Item4.ToString();
 
-                Invoke(new Action(() => textBox_orientacion.Text = comboBox_orientacion.Text));
-                Invoke(new Action(() => textBox_espejo.Text = comboBox_espejo.Text));
-                Invoke(new Action(() => signal = comboBox_signal.Text));
 
-                int printgo1 = Convert.ToInt32(textBox_modoPG.Text) - 1;
-                string modoPG1 = Convert.ToString(printgo1);
-                string plantilla =
+                if (senal_print == 1)
+                {
+                    actualizar();
+                    var resultado = Operacion(Distancia_Total, mark1, mark2, mark3);
+                    jobparR = (resultado.Item1 - 1).ToString();
+                    jobpar2 = resultado.Item2.ToString();
+                    joborg1 = resultado.Item3.ToString();
+                    joborg2 = resultado.Item4.ToString();
 
-    @"
+                    Invoke(new Action(() => textBox_orientacion.Text = comboBox_orientacion.Text));
+                    Invoke(new Action(() => textBox_espejo.Text = comboBox_espejo.Text));
+                    Invoke(new Action(() => signal = comboBox_signal.Text));
+
+                    int printgo1 = Convert.ToInt32(textBox_modoPG.Text) - 1;
+                    string modoPG1 = Convert.ToString(printgo1);
+
+                    string plantilla =
+
+        @"
 ^0*BEGINLJSCRIPT[(V01.06.00.31)]
 ^0*JLPAR[" + textBox_altura.Text + @" " + signal + @" 0 3 400 " + textBox_orientacion.Text + @" " + textBox_espejo.Text + @" " + textBox_resolucion.Text + @" 00:00 1 7000 0 0 1000 0 0]
 ^0*VISION[0 1 0 55000 3 5 3 5 0]
 ^0*MOBAPARAMETERUSAGE[0]
 ^0*BEGINJOB[0 (" + begingjob + @" 1)]
-^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @"0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG1 + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @"0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 "+ modoPG1 + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
 ^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (" + obj1 + @") 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
 ^0*ENDJOB[]
 ^0*BEGINJOB[1( " + begingjob + @" 2)]
-^0*JOBPAR[0 " + jobparR + @" " + jobpar2 + @" " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG1 + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+^0*JOBPAR[0 " + jobparR + @" " + jobpar2 + @" " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 "+ modoPG1 + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
 ^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (" + obj1 + @") 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
 ^0*ENDJOB[]
 ^0*JOBORG[1 " + joborg1 + @" 0]
@@ -723,66 +812,136 @@ namespace Trapid
 ^0*ENDLJSCRIPT[]
 ";
 
-                //^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @"0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG1 + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+                    //^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @"0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG1 + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
 
 
 
-                textBox_Respuesta.Text = plantilla;
+                    textBox_Respuesta.Text = plantilla;
 
-                command = plantilla;
-            }
+                    command = plantilla;
 
-            else
-            {
-                actualizar();
-                var resultado1 = Operacion1(Distancia_Total, mark1, mark2, mark3);
-                Invoke(new Action(() => textBox_orientacion.Text = comboBox_orientacion.Text));
-                Invoke(new Action(() => textBox_espejo.Text = comboBox_espejo.Text));
-                Invoke(new Action(() => signal = comboBox_signal.Text));
+                }
+                else
+                {
+                    actualizar();
+                    var resultado = Operacion(Distancia_Total, mark1, mark2, mark3);
+                    jobparR = (resultado.Item1 - 1).ToString();
+                    jobpar2 = resultado.Item2.ToString();
+                    joborg1 = resultado.Item3.ToString();
+                    joborg2 = resultado.Item4.ToString();
 
-                
-                int printgo1 = Convert.ToInt32(textBox_modoPG.Text) - 1;
-                string modoPG1 = Convert.ToString(printgo1);
-                string plantilla =
- 
-  @"
+                    Invoke(new Action(() => textBox_orientacion.Text = comboBox_orientacion.Text));
+                    Invoke(new Action(() => textBox_espejo.Text = comboBox_espejo.Text));
+                    Invoke(new Action(() => signal = comboBox_signal.Text));
+
+                    int printgo1 = Convert.ToInt32(textBox_modoPG.Text) - 1;
+                    string modoPG1 = Convert.ToString(printgo1);
+                    string plantilla=
+@"
 ^0*BEGINLJSCRIPT[(V01.06.00.31)]
 ^0*JLPAR[" + textBox_altura.Text + @" " + signal + @" 0 3 400 " + textBox_orientacion.Text + @" " + textBox_espejo.Text + @" " + textBox_resolucion.Text + @" 00:00 1 7000 0 0 1000 0 0]
 ^0*VISION[0 1 0 55000 3 5 3 5 0]
 ^0*MOBAPARAMETERUSAGE[0]
 ^0*BEGINJOB[0( " + begingjob + @" 2)]
-^0*JOBPAR["+ resultado1.Item3.ToString() +" 1"+ @" " + resultado1.Item4.ToString() + @" " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG1 + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+^0*JOBPAR[" + textBox_Printgodelay.Text + " 65535" + @" 0 " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 "+ modoPG1 + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
 ^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (" + obj1 + @") 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
 ^0*ENDJOB[]
 ^0*ENDLJSCRIPT[]
- ";
+";
+                    textBox_Respuesta.Text = plantilla;
 
-                //^0*JOBPAR["+ resultado1.Item3.ToString() +"1"+ @" " + resultado1.Item4.ToString() + @" " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG1 + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+                    command = plantilla;
 
 
-                /*
-                @"
-                ^0*BEGINLJSCRIPT[(V01.06.00.31)]
-                ^0*JLPAR[" + textBox_altura.Text + @" " + signal + @" 0 3 30 " + textBox_orientacion.Text + @" " + textBox_espejo.Text + @" " + textBox_resolucion.Text + @" 00:00 0 7000 0 0 1000 0 0]
-                ^0*VISION[0 1 0 55000 3 5 3 5 0]
-                ^0*MOBAPARAMETERUSAGE[0]
-                ^0*BEGINJOB[0 ( " + begingjob + @" 1)]
-                ^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
-                ^0*OBJ[1 1 0 0 (ISO1_" + textBox_matriz.Text + @") (" + obj1 + @") 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
-                ^0*ENDJOB[]
-                ^0*BEGINJOB[1( " + begingjob + @" 2)]
-                ^0*JOBPAR[0 " + jobparR + @" " + jobpar2 + @" " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
-                ^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (" + obj1 + @") 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
-                ^0*ENDJOB[]
-                ^0*JOBORG[1 " + joborg1 + @" 0]
-                ^0*JOBORG[2 " + joborg2 + @" 1]
-                ^0*ENDLJSCRIPT[]
-                ";
-                */
+                }
 
-                textBox_Respuesta.Text = plantilla;
+            }
 
-                command = plantilla;
+            else
+            {
+
+                if (senal_print == 1)
+                {
+                    actualizar();
+                    var resultado1 = Operacion1(Distancia_Total, mark1, mark2, mark3);
+                    Invoke(new Action(() => textBox_orientacion.Text = comboBox_orientacion.Text));
+                    Invoke(new Action(() => textBox_espejo.Text = comboBox_espejo.Text));
+                    Invoke(new Action(() => signal = comboBox_signal.Text));
+
+
+                    int printgo1 = Convert.ToInt32(textBox_modoPG.Text) - 1;
+                    string modoPG1 = Convert.ToString(printgo1);
+                    string plantilla =
+
+@"
+^0*BEGINLJSCRIPT[(V01.06.00.31)]
+^0*JLPAR[" + textBox_altura.Text + @" " + signal + @" 0 3 400 " + textBox_orientacion.Text + @" " + textBox_espejo.Text + @" " + textBox_resolucion.Text + @" 00:00 1 7000 0 0 1000 0 0]
+^0*VISION[0 1 0 55000 3 5 3 5 0]
+^0*MOBAPARAMETERUSAGE[0]
+^0*BEGINJOB[0( " + begingjob + @" 2)]
+^0*JOBPAR[" + resultado1.Item3.ToString() + " 1" + @" " + resultado1.Item4.ToString() + @" " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 "+ modoPG1 + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (" + obj1 + @") 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+^0*ENDJOB[]
+^0*ENDLJSCRIPT[]
+";
+
+                    //^0*JOBPAR["+ resultado1.Item3.ToString() +"1"+ @" " + resultado1.Item4.ToString() + @" " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 " + modoPG1 + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+
+
+                    /*
+                    @"
+                    ^0*BEGINLJSCRIPT[(V01.06.00.31)]
+                    ^0*JLPAR[" + textBox_altura.Text + @" " + signal + @" 0 3 30 " + textBox_orientacion.Text + @" " + textBox_espejo.Text + @" " + textBox_resolucion.Text + @" 00:00 0 7000 0 0 1000 0 0]
+                    ^0*VISION[0 1 0 55000 3 5 3 5 0]
+                    ^0*MOBAPARAMETERUSAGE[0]
+                    ^0*BEGINJOB[0 ( " + begingjob + @" 1)]
+                    ^0*JOBPAR[0 0 0 " + textBox_ANCHOFUENTE.Text + " " + @"" + textBox_modoPG.Text + " " + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+                    ^0*OBJ[1 1 0 0 (ISO1_" + textBox_matriz.Text + @") (" + obj1 + @") 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+                    ^0*ENDJOB[]
+                    ^0*BEGINJOB[1( " + begingjob + @" 2)]
+                    ^0*JOBPAR[0 " + jobparR + @" " + jobpar2 + @" " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 1 1 0 -1 ({ F6B5362F - 0298 - 2263 - D0BD - 7D1D37A02B21}) 1 1 55000 1 11 0 0 0 0 0 1 0 0 ]
+                    ^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (" + obj1 + @") 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+                    ^0*ENDJOB[]
+                    ^0*JOBORG[1 " + joborg1 + @" 0]
+                    ^0*JOBORG[2 " + joborg2 + @" 1]
+                    ^0*ENDLJSCRIPT[]
+                    ";
+                    */
+
+                    textBox_Respuesta.Text = plantilla;
+
+                    command = plantilla;
+
+                }
+
+                else
+                {
+                    actualizar();
+                    var resultado1 = Operacion1(Distancia_Total, mark1, mark2, mark3);
+                    Invoke(new Action(() => textBox_orientacion.Text = comboBox_orientacion.Text));
+                    Invoke(new Action(() => textBox_espejo.Text = comboBox_espejo.Text));
+                    Invoke(new Action(() => signal = comboBox_signal.Text));
+
+
+                    int printgo1 = Convert.ToInt32(textBox_modoPG.Text) - 1;
+                    string modoPG1 = Convert.ToString(printgo1);
+                    string plantilla =
+@"
+^0*BEGINLJSCRIPT[(V01.06.00.31)]
+^0*JLPAR[" + textBox_altura.Text + @" " + signal + @" 0 3 400 " + textBox_orientacion.Text + @" " + textBox_espejo.Text + @" " + textBox_resolucion.Text + @" 00:00 1 7000 0 0 1000 0 0]
+^0*VISION[0 1 0 55000 3 5 3 5 0]
+^0*MOBAPARAMETERUSAGE[0]
+^0*BEGINJOB[0( " + begingjob + @" 2)]
+^0*JOBPAR[" + textBox_Printgodelay.Text + " 65535" + @" 0 " + textBox_ANCHOFUENTE.Text + @" " + textBox_modoPG.Text + @" 0 0 0 0 0 -1 ({ F671A72C-E135-DD52-6599-54EDDA3BE6D6 }) 1 1 55000 1 "+ modoPG1 + @" 0 " + textBox_espejo.Text + @" 0 0 0 1 0 0 ]
+^0*OBJ[1 0 0 0 (ISO1_" + textBox_matriz.Text + @") (" + obj1 + @") 1 0 0 0 0 1 0 0 0 0 0 0 () () 0 0 ()]
+^0*ENDJOB[]
+^0*ENDLJSCRIPT[]
+";
+                    textBox_Respuesta.Text = plantilla;
+
+                    command = plantilla;
+                }
+                    
             }
         }
 
@@ -834,7 +993,11 @@ namespace Trapid
             Configuracion.GuardarConfiguracion();
         }
 
-        
+        private void textBox_Printgodelay_TextChanged(object sender, EventArgs e)
+        {
+            MiConfig.delay1 = textBox_Printgodelay.Text;
+            Configuracion.GuardarConfiguracion();
+        }
 
         private async void button_Encender_Click(object sender, EventArgs e)
         {
